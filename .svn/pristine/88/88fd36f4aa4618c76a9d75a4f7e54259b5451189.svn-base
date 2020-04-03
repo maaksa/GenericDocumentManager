@@ -1,0 +1,40 @@
+package gerudok.gui;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class MyToolBar extends JToolBar {
+
+    private JButton btnNewFile;
+    private JButton btnOpen;
+    private JButton btnSave;
+
+    public MyToolBar() {
+        super(SwingConstants.HORIZONTAL);
+        btnNewFile = new JButton();
+        btnNewFile.setToolTipText("New File");
+        btnNewFile.setIcon(new ImageIcon("images/new-file-icon.png"));
+
+        add(btnNewFile);
+
+        addSeparator();
+
+        btnOpen = new JButton();
+        btnOpen.setToolTipText("Open");
+        btnOpen.setIcon(new ImageIcon("images/open-file-icon.png"));
+        add(btnOpen);
+
+        addSeparator();
+
+        btnSave = new JButton();
+        btnSave.setToolTipText("Save");
+        ImageIcon imageSave = new ImageIcon("images/Save-icon.png");
+        Image imageResized = imageSave.getImage().getScaledInstance(24, 24, 1);
+        btnSave.setIcon(new ImageIcon(imageResized));
+        add(btnSave);
+
+        setFloatable(true);
+        setBackground(new Color(198,204, 201));
+
+    }
+}

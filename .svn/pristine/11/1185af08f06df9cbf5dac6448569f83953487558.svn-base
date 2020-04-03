@@ -1,0 +1,7 @@
+package gerudok.eventobserver;
+
+import java.util.EventListener;
+
+public interface UpdateObserver extends EventListener {
+    public void updatePerformed(Object o);
+}

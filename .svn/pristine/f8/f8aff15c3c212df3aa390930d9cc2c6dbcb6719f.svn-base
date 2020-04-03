@@ -1,0 +1,25 @@
+package gerudok.model;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+
+public class Page extends DefaultMutableTreeNode {
+
+    private String name;
+
+
+    public Page(String name){
+        this.name = name;
+    }
+
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+
+}

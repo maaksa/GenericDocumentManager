@@ -1,0 +1,40 @@
+package gerudok.actions;
+
+import gerudok.app.MyJFrame;
+import gerudok.model.Document;
+import gerudok.model.Page;
+import gerudok.model.Project;
+import gerudok.model.workspace.Workspace;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+
+public class NewNodeAction extends MyAbstractAction {
+
+    public NewNodeAction(){
+        putValue(NAME, "Add");
+        putValue(SMALL_ICON, loadIcon("new-file-icon.png"));
+        putValue(SHORT_DESCRIPTION, "Add");
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        Object object = MyJFrame.getInstance().getWorkspaceTree().getLastSelectedPathComponent();
+
+        if(object instanceof Workspace){
+            Project proj = new Project("New project", (Workspace)object);
+            ((Workspace) object).addProject(proj);
+        }
+        else if(object instanceof Project){
+            Document doc = new Document("New document", (Project)object);
+            ((Project) object).addDocument(doc);
+        }
+        else if(object instanceof Document){
+            Page page = new Page("New page", (Document)object);
+            ((Document) object).addPage(page);
+        }
+        SwingUtilities.updateComponentTreeUI(MyJFrame.getInstance().getWorkspaceTree());
+        MyJFrame.getInstance().getWorkspaceTree().expandPath(MyJFrame.getInstance().getWorkspaceTree().getSelectionPath());
+    }
+}

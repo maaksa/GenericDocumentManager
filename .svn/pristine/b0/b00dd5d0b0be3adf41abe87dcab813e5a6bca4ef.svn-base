@@ -1,0 +1,23 @@
+package gerudok.actions;
+
+import gerudok.app.MyJFrame;
+import gerudok.view.DocumentView;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
+public class TriangleAction extends MyAbstractAction {
+
+    public TriangleAction(){
+        putValue(NAME, "Triangle");
+        putValue(SMALL_ICON, loadIcon("Editing-Triangle-Stroked-icon.png"));
+        putValue(SHORT_DESCRIPTION, "Triangle");
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        ((DocumentView) MyJFrame.getInstance().getWorkspaceView().getCurrentProjectView().getJTabbedPane().getSelectedComponent()).getFocusPage().getPage().startTriangleState();
+
+    }
+}

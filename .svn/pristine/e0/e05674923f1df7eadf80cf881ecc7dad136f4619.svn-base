@@ -1,0 +1,61 @@
+package gerudok.actions;
+
+import gerudok.app.MyJFrame;
+import gerudok.model.workspace.Workspace;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.WindowListener;
+
+public class ExitWindowAction implements WindowListener {
+
+    @Override
+    public void windowOpened(java.awt.event.WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowClosing(java.awt.event.WindowEvent e) {
+        int answ = exitAppAction();
+        if(answ == 1){
+            MyJFrame.getInstance().setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        }
+        else{
+            MyJFrame.getInstance().setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        }
+    }
+
+    public int exitAppAction(){
+        int answ = JOptionPane.showConfirmDialog(MyJFrame.getInstance(), "Are you sure you want to close application");
+        if(answ == JOptionPane.YES_OPTION) {
+            return 1;
+        }
+        else
+            return 0;
+    }
+
+    @Override
+    public void windowClosed(java.awt.event.WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowIconified(java.awt.event.WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeiconified(java.awt.event.WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowActivated(java.awt.event.WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeactivated(java.awt.event.WindowEvent e) {
+
+    }
+}

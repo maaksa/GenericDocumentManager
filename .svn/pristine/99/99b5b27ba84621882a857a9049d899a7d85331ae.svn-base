@@ -1,0 +1,45 @@
+package gerudok.gui;
+
+import gerudok.app.MyJFrame;
+
+import javax.swing.*;
+import javax.swing.tree.TreePath;
+import java.awt.*;
+import java.awt.event.*;
+
+class PopupHandler {
+    JTree tree;
+    JPopupMenu popup;
+    Point locPoint;
+
+    public PopupHandler(JTree tree, JPopupMenu popup) {
+        this.tree = tree;
+        this.popup = popup;
+        tree.addMouseListener(mouseListener);
+    }
+
+    private MouseListener mouseListener = new MouseAdapter() {
+        private void checkForPopup(MouseEvent e) {
+            if (e.isPopupTrigger()) {
+                locPoint = e.getPoint();
+                WorkspaceTree wst = MyJFrame.getInstance().getWorkspaceTree();
+                TreePath path = wst.getPathForLocation(e.getX(), e.getY());
+                if (path != null) {
+                    popup.show(tree, locPoint.x, locPoint.y);
+                }
+            }
+        }
+
+        public void mousePressed(MouseEvent e) {
+            checkForPopup(e);
+        }
+
+        public void mouseReleased(MouseEvent e) {
+            checkForPopup(e);
+        }
+
+        public void mouseClicked(MouseEvent e) {
+            checkForPopup(e);
+        }
+    };
+}

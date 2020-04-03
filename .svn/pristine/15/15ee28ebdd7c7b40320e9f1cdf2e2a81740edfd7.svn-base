@@ -1,0 +1,46 @@
+package gerudok.actions.manager;
+
+import gerudok.app.MyJFrame;
+
+import javax.swing.*;
+
+public class ExceptionManager {
+    private JFrame mainFrame;
+
+    public ExceptionManager(MyJFrame mainFrame){
+        this.mainFrame = mainFrame;
+    }
+
+    public void workspaceDeleteException(){
+        JOptionPane.showMessageDialog(mainFrame,"Workspace can't be deleted", "Alert", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public int nodeDeleteQuestion(String nodeName){
+        int answ = JOptionPane.showConfirmDialog(mainFrame,"Are you sure you want to delete " + nodeName + "?");
+        if(answ == JOptionPane.YES_OPTION)
+            return 1;
+        else
+            return 0;
+    }
+
+    public int exitAppException(){
+        int answ = JOptionPane.showConfirmDialog(mainFrame, "Are you sure you want to exit application?");
+        if(answ == JOptionPane.YES_OPTION)
+            return 1;
+        else
+            return 0;
+    }
+
+    public void renameNodeException(Object object){
+        JOptionPane.showMessageDialog(mainFrame,object.toString() + " name can't be empty", "Warning", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void renameWorkspaceException(){
+        JOptionPane.showMessageDialog(mainFrame,"Workspace can't be renamed", "Warning", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void sameNameException(Object object){
+        JOptionPane.showMessageDialog(mainFrame,"This name " + object.toString() + " already exists", "Warning", JOptionPane.ERROR_MESSAGE);
+    }
+
+}

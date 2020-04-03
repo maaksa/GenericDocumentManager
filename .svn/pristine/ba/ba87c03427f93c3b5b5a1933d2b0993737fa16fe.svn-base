@@ -1,0 +1,83 @@
+package gerudok.state;
+
+import gerudok.model.elements.SlotElement;
+import gerudok.view.PageView;
+import gerudok.view.painters.handle.Handle;
+
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
+
+public class SelectState extends State {
+
+    private PageView mediator;
+
+    private int elementInMotion = -1;
+    private Handle handleInMotion = null;
+
+    public SelectState(PageView mediator){
+        this.mediator = mediator;
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+        Point position = e.getPoint();
+        if (e.getButton()==MouseEvent.BUTTON1){
+            //provera se da li je korisnik uhvatio neki od hand-lova
+            //trebace nam kad krenemo raditi resize elemenata
+            handleInMotion = mediator.getDeviceAndHandleForPoint(position);
+            if(handleInMotion == null){
+
+                if(!e.isControlDown()){
+                    mediator.getPage().getSelectionModel().removeAllFromSelectionList();
+                }
+
+                elementInMotion = mediator.getPage().getElementAtPosition(position);
+                if(elementInMotion != -1){
+                    //pogodjen je element, ukoliko je selektovan treba ga ukloniti iz liste,
+                    //ako nije treba ga dodati u listu
+                    SlotElement element=mediator.getPage().getElementAt(elementInMotion);
+
+                    if (mediator.getPage().getSelectionModel().isElementSelected(element)){
+                        mediator.getPage().getSelectionModel().removeFromSelectionList(element);
+                    }else{
+                        mediator.getPage().getSelectionModel().addToSelectionList(element);
+                    }
+
+                    mediator.repaint();
+
+                }else{
+                    //nije pogodjen nijedan element
+                    mediator.repaint();
+                }
+            }else {
+                if(handleInMotion == Handle.ROTATE){
+                    mediator.startRotateState();
+                    mediator.getManagerState().getCurrentState().mousePressed(e);
+                }else {
+                    mediator.startResizeState();
+                    mediator.getManagerState().getCurrentState().mousePressed(e);
+                }
+            }
+        }
+
+
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+        mediator.startLassoState();
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        Point2D point = e.getPoint();
+        mediator.setMouseCursor(point);
+    }
+}

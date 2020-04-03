@@ -1,0 +1,21 @@
+package gerudok.gui;
+
+import gerudok.app.MyJFrame;
+
+import javax.swing.*;
+
+public class MyMenuBar extends JMenuBar {
+
+    public MyMenuBar() {
+        JMenu fileMenu = new JMenu("File");
+
+        fileMenu.add(MyJFrame.getInstance().getActionManager().getNewProjectAction());
+        fileMenu.add(MyJFrame.getInstance().getActionManager().getOpenWorkSpaceAction());
+        add(fileMenu);
+
+        JMenu helpMenu=new JMenu("Help");
+        helpMenu.add(MyJFrame.getInstance().getActionManager().getAboutAction());
+        add(helpMenu);
+
+    }
+}

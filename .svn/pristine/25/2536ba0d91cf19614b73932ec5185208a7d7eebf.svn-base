@@ -1,0 +1,157 @@
+package gerudok.view.painters.handle;
+
+import gerudok.model.elements.SlotDevice;
+
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Dimension2D;
+import java.awt.geom.Point2D;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+
+public class Handle {
+    private SlotDevice selectedSlot=null;
+    private Graphics2D g2d;
+    private static final int handleSize=7;
+
+
+    public Handle() {
+
+    }
+
+    public Graphics2D getG2d() {
+        return g2d;
+    }
+
+    public void setG2d(Graphics2D g2d) {
+        this.g2d = g2d;
+    }
+
+    public void paintSlotHandles() {
+        if(g2d==null) {
+            return;
+        }
+        g2d.setStroke(new BasicStroke(1f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_BEVEL, 1f, new float[] {3f,6f}, 0));
+        g2d.setPaint(Color.BLUE);
+        Shape shape = selectedSlot.getSlotPainter().getShape();
+
+        /*g2d.drawRect((int)selectedSlot.getPosition().getX(),(int)selectedSlot.getPosition().getY(),
+                (int)selectedSlot.getSize().getWidth(), (int)selectedSlot.getSize().getHeight());
+
+         */
+        for(HandleEnum h: HandleEnum.values()) {
+            paintSelectionHandle(g2d,getHandlePoint(selectedSlot.getPosition(),selectedSlot.getSize(),h));
+        }
+
+
+    }
+
+    private void paintSelectionHandle(Graphics2D g2,Point2D position) {
+        int size=7;
+        Shape shape = selectedSlot.getSlotPainter().getShape();
+        Rectangle rectangle = new Rectangle(shape.getBounds());
+        g2.fill(rectangle);
+    }
+
+    private Point2D getHandlePoint(Point2D topLeft,Dimension2D size,HandleEnum handlePosition) {
+        double x=0, y=0;
+
+        // Ako su gornji hendlovi
+        if(handlePosition == HandleEnum.NORTH_WEST || handlePosition == HandleEnum.NORTH || handlePosition == HandleEnum.NORTH_EAST){
+            y = topLeft.getY();
+        }
+        // Ako su centralni po y osi
+        if(handlePosition == HandleEnum.EAST || handlePosition == HandleEnum.WEST){
+            y = topLeft.getY()+size.getHeight()/2;
+        }
+        //Ako su donji
+        if(handlePosition == HandleEnum.SOUTH_WEST || handlePosition == HandleEnum.SOUTH || handlePosition == HandleEnum.SOUTH_EAST){
+            y = topLeft.getY() + size.getHeight();
+        }
+        // Odredjivanje x koordinate
+
+        // Ako su levi
+        if(handlePosition == HandleEnum.NORTH_WEST || handlePosition == HandleEnum.WEST || handlePosition == HandleEnum.SOUTH_WEST){
+            x = topLeft.getX();
+        }
+        // ako su centralni po x osi
+        if(handlePosition == HandleEnum.NORTH || handlePosition == HandleEnum.SOUTH){
+            x = topLeft.getX() + size.getWidth()/2;
+        }
+        // ako su desni
+        if(handlePosition == HandleEnum.NORTH_EAST || handlePosition == HandleEnum.EAST || handlePosition == HandleEnum.SOUTH_EAST){
+            x = topLeft.getX() + size.getWidth();
+        }
+        return new Point2D.Double(x,y);
+    }
+
+    public Cursor setMouseCursor(Point2D point){
+
+        HandleEnum handleEnum = getHandleForPoint(selectedSlot,point);
+        Cursor cursor = null;
+
+        if(handleEnum != null){
+            switch(handleEnum){
+                case NORTH:
+                    cursor = Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR);
+                    break;
+                case SOUTH:
+                    cursor = Cursor.getPredefinedCursor(Cursor.S_RESIZE_CURSOR);
+                    break;
+                case EAST:
+                    cursor = Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR);
+                    break;
+                case WEST:
+                    cursor = Cursor.getPredefinedCursor(Cursor.W_RESIZE_CURSOR);
+                    break;
+                case SOUTH_EAST:
+                    cursor = Cursor.getPredefinedCursor(Cursor.SE_RESIZE_CURSOR);
+                    break;
+                case NORTH_WEST:
+                    cursor = Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR);
+                    break;
+                case SOUTH_WEST:
+                    cursor = Cursor.getPredefinedCursor(Cursor.SW_RESIZE_CURSOR);
+                    break;
+                case NORTH_EAST:
+                    cursor = Cursor.getPredefinedCursor(Cursor.NE_RESIZE_CURSOR);
+                    break;
+            }
+
+        }
+        return cursor;
+    }
+
+
+    public HandleEnum getHandleForPoint(SlotDevice element, Point2D point){
+        for(HandleEnum h: HandleEnum.values()){
+            if(isPointInHandle(element, point, h)){
+                return h;
+            }
+        }
+        return null;
+    }
+
+    private boolean isPointInHandle(SlotDevice element, Point2D point, HandleEnum handleEnum){
+        if (element instanceof SlotDevice){
+            setSelectedSlot(element);
+            SlotDevice device=(SlotDevice)element;
+            Point2D handleCenter = getHandlePoint(device.getPosition(), (Dimension2D) device.getSize(), handleEnum);
+            return ( (Math.abs(point.getX()-handleCenter.getX())<=(double)handleSize/2) &&
+                    (Math.abs(point.getY()-handleCenter.getY())<=(double)handleSize/2) );
+        }else
+            return false;
+    }
+
+    public SlotDevice getSelectedSlot() {
+        return selectedSlot;
+    }
+
+    public void setSelectedSlot(SlotDevice selectedSlot) {
+        this.selectedSlot = selectedSlot;
+    }
+}
+

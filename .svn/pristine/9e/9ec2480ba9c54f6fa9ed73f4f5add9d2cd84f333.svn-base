@@ -1,0 +1,74 @@
+package gerudok.controller;
+
+import gerudok.app.MyJFrame;
+import gerudok.model.Document;
+import gerudok.model.Project;
+import gerudok.model.workspace.Workspace;
+
+import javax.swing.tree.TreePath;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+public class WorkspaceTreeMouseController implements MouseListener {
+    @Override
+    public void mouseClicked(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent mouseEvent) {
+
+        //ako se desio jedan klik uzima koordinate i postavlja ih kao novi path
+        //radi i za levi i za desni klik
+        if(mouseEvent.getClickCount() == 1){
+            TreePath selPath = MyJFrame.getInstance().getWorkspaceTree().
+                    getPathForLocation(mouseEvent.getX(), mouseEvent.getY());
+            MyJFrame.getInstance().getWorkspaceTree().setSelectionPath(selPath);
+
+            Object object = MyJFrame.getInstance().getWorkspaceTree().getLastSelectedPathComponent();
+            if(object instanceof Workspace){
+                MyJFrame.getInstance().getActionManager().getRenameNodeAction().setEnabled(false);
+                MyJFrame.getInstance().getActionManager().getDeleteNodeAction().setEnabled(false);
+            }
+            else{
+                MyJFrame.getInstance().getActionManager().getRenameNodeAction().setEnabled(true);
+                MyJFrame.getInstance().getActionManager().getDeleteNodeAction().setEnabled(true);
+            }
+        }
+        if(mouseEvent.getClickCount() == 2) {
+            TreePath path = MyJFrame.getInstance().getWorkspaceTree().getSelectionPath();
+            if (path != null){
+                if (path.getLastPathComponent() instanceof Project) {
+                    //ako je dupli klik na projekat ponovo se otvaraju
+                    //svi zatvoreni dokumenti i postavlja se u fokus
+                    MyJFrame.getInstance().getWorkspaceView().getCurrentProjectView().initialiseJTabbedPane();
+
+                } else if (path.getLastPathComponent() instanceof Document) {
+                    //menja trenutni projectview na onaj kojem pripada odgovarajuci dokumentview
+                    MyJFrame.getInstance().getWorkspaceView().
+                            changeProjectView((Project) ((Document) path.getLastPathComponent()).getParent());
+
+                    //menja selektovani tab na trenutnom projectview
+                    MyJFrame.getInstance().getWorkspaceView().getCurrentProjectView().
+                            setSelectedTab((Document) path.getLastPathComponent());
+                }
+            }
+        }
+    }
+
+
+    @Override
+    public void mouseReleased(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent mouseEvent) {
+
+    }
+}

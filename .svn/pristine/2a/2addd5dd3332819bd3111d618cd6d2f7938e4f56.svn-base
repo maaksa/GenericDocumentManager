@@ -1,0 +1,18 @@
+package gerudok.actions.view;
+
+import javax.swing.*;
+
+public class DeleteNodeActionView {
+
+    public DeleteNodeActionView(){
+
+    }
+    public int nodeDeleteQuestion(String message){
+        int answ = JOptionPane.showConfirmDialog(null ,
+                "Are you sure you want to delete " + message +"?");
+        if(answ == JOptionPane.YES_OPTION)
+            return 1;
+        else
+            return 0;
+    }
+}

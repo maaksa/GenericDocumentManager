@@ -1,0 +1,11 @@
+package gerudok;
+
+import myjframe.MyJFrame;
+
+public class Main {
+
+	public static void main(String[] args) {
+        MyJFrame.getInstance();
+	}
+
+}

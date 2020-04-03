@@ -1,0 +1,58 @@
+package gerudok.view;
+
+import gerudok.app.MyJFrame;
+import gerudok.gui.MyJTabbedPane;
+import gerudok.model.Document;
+import gerudok.model.Page;
+import gerudok.observer.MyObserver;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class DocumentView extends JPanel implements MyObserver {
+
+    private Document document;
+
+    public DocumentView(Document document) {
+
+        super();
+        this.document = document;
+        document.addObserver(this);
+        setPreferredSize(new Dimension(400, 400));
+        this.setName(this.document.toString());
+        this.setLayout(new GridLayout(3,2));
+
+        int n = this.document.getPagesCount();
+        for (int i = 0; i < n; i++) {
+            Page page = this.document.getPage(i);
+            PageView pageView = new PageView(page);
+            page.addObserver(pageView);
+            this.add(pageView);
+        }
+        setVisible(true);
+    }
+
+   /* public void setDocument(Document document){
+        this.document.removeObserver(this);
+        this.document = document;
+        this.document.addObserver(this);
+        this.setName(document.getName());
+        setTitle(document.getName());
+    }
+*/
+    public Document getDocument() {
+        return document;
+    }
+
+    @Override
+    public void update(Object var1) {
+        if(var1 instanceof String){
+            int index = MyJFrame.getInstance().getMyJTabbedPane().indexOfTab(this.getName());
+            MyJFrame.getInstance().getMyJTabbedPane().setTitleAt(index, (String)var1);
+            this.setName((String)var1);
+        }else if(var1 instanceof Document){
+            int index = MyJFrame.getInstance().getMyJTabbedPane().indexOfTab(this.getName());
+            MyJFrame.getInstance().getMyJTabbedPane().remove(index);
+        }
+    }
+}

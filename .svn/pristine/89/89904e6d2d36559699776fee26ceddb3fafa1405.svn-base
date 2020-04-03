@@ -1,0 +1,42 @@
+package gerudok.errorhandler;
+
+import gerudok.app.MyJFrame;
+
+import javax.swing.*;
+import java.awt.*;
+
+public abstract class ErrorHandlerSimpleFactory {
+
+    public static void generateError(ExceptionEnum exceptionEnum){
+        switch (exceptionEnum){
+            case NO_SELECTED_DELETE:
+                JOptionPane.showMessageDialog(MyJFrame.getInstance(),
+                        "You haven't selected anything!", "No selection", JOptionPane.WARNING_MESSAGE);
+                break;
+            case NO_SELECTED_TAB:
+                JOptionPane.showMessageDialog(MyJFrame.getInstance(),
+                        "You haven't selected a tab!", "No selected tab", JOptionPane.WARNING_MESSAGE);
+                break;
+            case NODE_SAME_NAME:
+                JOptionPane.showMessageDialog(MyJFrame.getInstance(),
+                        "Name already exists.", "No selection", JOptionPane.INFORMATION_MESSAGE);
+                break;
+            case WORKSPACE_DELETE:
+                JOptionPane.showMessageDialog(MyJFrame.getInstance(),
+                        "You can't delete the workspace!", "No selection", JOptionPane.ERROR_MESSAGE);
+                break;
+            case WORKSPACE_RENAME:
+                JOptionPane.showMessageDialog(MyJFrame.getInstance(),
+                        "Workspace can't be renamed!", "No selection", JOptionPane.INFORMATION_MESSAGE);
+                break;
+            case NODE_RENAME_EMPTY:
+                JOptionPane.showMessageDialog(MyJFrame.getInstance(),
+                        "Name can't be empty!", "No selection", JOptionPane.WARNING_MESSAGE);
+                break;
+            case NO_SELECTED_PAGE:
+                JOptionPane.showMessageDialog(MyJFrame.getInstance(),
+                        "Select a page!", "No selection", JOptionPane.WARNING_MESSAGE);
+                break;
+        }
+    }
+}

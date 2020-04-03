@@ -1,0 +1,60 @@
+package gerudok.state;
+
+import gerudok.app.MyJFrame;
+import gerudok.model.Page;
+import gerudok.model.elements.RectangleElement;
+import gerudok.model.elements.SlotDevice;
+
+import java.awt.event.MouseEvent;
+
+public class RotateState extends State {
+
+    private Page mediator;
+
+    public RotateState(Page mediator){
+        this.mediator = mediator;
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        SlotDevice selected = null;
+        for (SlotDevice slotDevice: mediator.getSlotDevices()) {
+            if(slotDevice.getSlotPainter().isElementAt(e.getPoint())){
+                selected = slotDevice;
+                System.out.println("Here");
+                break;
+            }
+        }
+        mediator.setSelectedSlotDevice(selected);
+        return;
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+       if(mediator.getSelectedSlotDevice() == null){
+            return;
+       }
+       /* if(handleEnum == null && rotateCircle == null){
+            return;
+        }
+        if(handleEnum != null){
+            resize(e);
+        }else if(rotateCircle != null){
+            rotate(e);
+        }
+        */
+        double angle = 0;
+        SlotDevice temp = mediator.getSelectedSlotDevice();
+        mediator.getSlotDevices().remove(temp);
+        angle = Math.atan2(e.getY() - mediator.getSelectedSlotDevice().getSlotPainter().getShape().getBounds().getCenterY(),
+                e.getX() - mediator.getSelectedSlotDevice().getSlotPainter().getShape().getBounds().getCenterX());
+        mediator.getSelectedSlotDevice().getSlotPainter();
+        mediator.getSelectedSlotDevice().setAngle(angle);
+        mediator.addSlotDevice(temp);
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+}

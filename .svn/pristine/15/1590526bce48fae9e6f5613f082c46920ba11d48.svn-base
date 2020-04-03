@@ -1,0 +1,51 @@
+package gerudok.view;
+
+import gerudok.model.Document;
+import gerudok.model.Page;
+import gerudok.observer.MyObserver;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class DocumentView extends JPanel implements MyObserver {
+
+    private Document document;
+
+    public DocumentView(Document document) {
+
+        super();
+        this.document = document;
+        document.addObserver(this);
+        setPreferredSize(new Dimension(400, 400));
+        this.setName(this.document.toString());
+        this.setLayout(new GridLayout(3,2));
+
+        int n = this.document.getPagesCount();
+        for (int i = 0; i < n; i++) {
+            Page page = this.document.getPage(i);
+            PageView pageView = new PageView(page);
+            page.addObserver(pageView);
+            this.add(pageView);
+        }
+        setVisible(true);
+    }
+
+   /* public void setDocument(Document document){
+        this.document.removeObserver(this);
+        this.document = document;
+        this.document.addObserver(this);
+        this.setName(document.getName());
+        setTitle(document.getName());
+    }
+*/
+    public Document getDocument() {
+        return document;
+    }
+
+    @Override
+    public void update(Object var1) {
+        if(var1 instanceof String){
+            this.setName((String)var1);
+        }
+    }
+}

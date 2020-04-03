@@ -1,0 +1,81 @@
+package gerudok.model;
+
+import gerudok.app.MyJFrame;
+import gerudok.errorhandler.ExceptionEnum;
+import gerudok.observer.MyObservable;
+import gerudok.observer.MyObserver;
+import gerudok.observer.ObserverEnum;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Page extends DefaultMutableTreeNode implements MyObservable {
+
+    private String name;
+    private List<MyObserver> observers;
+
+
+    public Page(String name){
+        this.name = name;
+    }
+
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    public void setName(String name){
+        if(name == null || name.isEmpty()){
+            MyJFrame.getInstance().getErrorHandler().generateError(ExceptionEnum.NODE_RENAME_EMPTY);
+            return;
+        }
+        if(checkIfNameExists(name) == false) {
+            this.name = name;
+            notifyObservers(name, ObserverEnum.NAME_CHANGE);
+        }
+    }
+
+    //proverava da li ime vec postoji u istom dokumentu
+    private boolean checkIfNameExists(String name) {
+        Document document = (Document) this.getParent();
+        List<Page> pages = document.getPages();
+        for (Page p : pages) {
+            if (p.toString().equals(name) && !p.equals(this)) {
+                MyJFrame.getInstance().getErrorHandler().generateError(ExceptionEnum.NODE_SAME_NAME);
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    @Override
+    public void addObserver(MyObserver var1) {
+        if(observers == null){
+            observers = new ArrayList<>();
+        }
+        if(var1 != null && !observers.contains(var1)){
+            observers.add(var1);
+        }
+    }
+
+    @Override
+    public void removeObserver(MyObserver var1) {
+        if(var1 != null && observers != null){
+            observers.remove(var1);
+        }
+    }
+
+    @Override
+    public void notifyObservers(Object var1, ObserverEnum changeType) {
+        if(observers != null && !observers.isEmpty()){
+            for (MyObserver observer : observers) {
+                observer.update(var1, changeType);
+            }
+        }
+    }
+
+}

@@ -1,0 +1,83 @@
+package gerudok.model.workspace;
+
+import gerudok.model.Project;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+
+public class Workspace extends DefaultMutableTreeNode {
+
+    private List<Project> projects;
+
+    public Workspace(){
+        super();
+        projects = new ArrayList<>();
+    }
+
+    public void addProject(Project project){
+        if(projects == null){
+            projects = new ArrayList<>();
+        }
+        if(project!=null && !projects.contains(project)) {
+            projects.add(project);
+            project.setName("Projekat - " + projects.size());
+        }
+    }
+
+    public void removeProject(Project project){
+        if(project != null && projects != null && !projects.isEmpty()){
+            projects.remove(project);
+        }
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public String toString(){
+        return "Workspace";
+    }
+
+    public TreeNode getChildAt(int arg0) {
+        return getProject(arg0);
+
+    }
+
+    public int getChildCount() {
+        return getProjectsCount();
+    }
+
+    public TreeNode getParent() {
+        return null;
+    }
+
+    public int getIndex(TreeNode arg0) {
+        return getProjectIndex((Project) arg0);
+    }
+
+    public boolean getAllowsChildren() {
+        return true;
+    }
+
+    public boolean isLeaf() {
+        return false;
+    }
+
+    public Enumeration<TreeNode> children() {
+        return (Enumeration<TreeNode>) projects;
+    }
+
+    public Project getProject(int index) {
+        return projects.get(index);
+    }
+
+    public int getProjectIndex(Project project) {
+        return projects.indexOf(project);
+    }
+    public int getProjectsCount() {
+        return projects.size();
+    }
+}

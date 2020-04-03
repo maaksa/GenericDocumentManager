@@ -1,0 +1,199 @@
+package gerudok.model;
+
+import gerudok.app.MyJFrame;
+import gerudok.errorhandler.ExceptionEnum;
+import gerudok.eventobserver.UpdateObservable;
+import gerudok.eventobserver.UpdateObserver;
+import gerudok.model.elements.SlotDevice;
+import gerudok.observer.MyObservable;
+import gerudok.observer.MyObserver;
+import gerudok.observer.ObserverEnum;
+import gerudok.state.ManagerState;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Page extends DefaultMutableTreeNode implements MyObservable, UpdateObservable, Serializable {
+
+    private String name;
+    private transient List<MyObserver> observers;
+    private transient List<UpdateObserver> updateObservers;
+    private  ArrayList<SlotDevice> slotDevices;
+    private transient SlotDevice selectedSlotDevice;
+    private transient ManagerState managerState;
+
+
+    public Page(String name){
+        this.name = name;
+        slotDevices = new ArrayList<SlotDevice>();
+        managerState = new ManagerState(this);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    //koristi se kada korisnik postavlja ime zbog handle-ovanja error message-a
+    public void renamePage(String name){
+        this.name = name;
+        notifyObservers(name, ObserverEnum.NAME_CHANGE);
+        fireUpdatePerformed(name);
+    }
+
+    //koristim kada ja setujem ime
+    public void setName(String name){
+
+        if(name == null || name.isEmpty()) {
+            return;
+        }
+        //ako ne postoji postavlja ime
+        int sameNameCounter = 1;
+        while (checkIfNameExists(name)){
+            if(sameNameCounter == 1){
+                name = name + " - " + ++sameNameCounter;
+                continue;
+            }
+            name = name.substring(0, name.indexOf('-')) + "- " + ++sameNameCounter;
+        }
+        this.name = name;
+        notifyObservers(name, ObserverEnum.NAME_CHANGE);
+        fireUpdatePerformed(name);
+    }
+
+    //proverava da li ime vec postoji u istom dokumentu
+    public boolean checkIfNameExists(String name) {
+        Document document = (Document) this.getParent();
+        List<Page> pages = document.getPages();
+        for (Page p : pages) {
+            if (p.toString().equals(name) && !p.equals(this)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void setSelectedSlotDevice(SlotDevice selectedSlotDevice) {
+        this.selectedSlotDevice = selectedSlotDevice;
+    }
+
+    public SlotDevice getSelectedSlotDevice() {
+        return selectedSlotDevice;
+    }
+
+    @Override
+    public void addObserver(MyObserver var1) {
+        if(observers == null){
+            observers = new ArrayList<>();
+        }
+        if(var1 != null && !observers.contains(var1)){
+            observers.add(var1);
+        }
+    }
+
+    @Override
+    public void removeObserver(MyObserver var1) {
+        if(var1 != null && observers != null){
+            observers.remove(var1);
+        }
+    }
+
+    @Override
+    public void notifyObservers(Object var1, ObserverEnum changeType) {
+        if(observers != null && !observers.isEmpty()){
+            for (MyObserver observer : observers) {
+                observer.update(var1, changeType);
+            }
+        }
+    }
+
+    public void fireUpdatePerformed(Object o) {
+        if(updateObservers != null && !updateObservers.isEmpty()){
+            for (UpdateObserver updateObserver : updateObservers) {
+                updateObserver.updatePerformed(o);
+            }
+        }
+    }
+
+    @Override
+    public void addUpdateObserver(UpdateObserver updateObserver) {
+        if(updateObservers == null){
+            updateObservers = new ArrayList<>();
+        }
+        if(updateObserver != null && !updateObservers.contains(updateObserver)){
+            updateObservers.add(updateObserver);
+        }
+    }
+
+    @Override
+    public void removeUpdateObserver(UpdateObserver updateObserver) {
+        if(updateObserver != null && updateObservers != null && !updateObservers.isEmpty()){
+            updateObservers.remove(updateObserver);
+        }
+    }
+
+    public ManagerState getManagerState() {
+        if(managerState == null){
+            managerState = new ManagerState(this);
+        }
+        return managerState;
+    }
+
+    public void setManagerState(ManagerState managerState) {
+        this.managerState = managerState;
+    }
+
+    public ArrayList<SlotDevice> getSlotDevices() {
+        return slotDevices;
+    }
+
+    public void addSlotDevice(SlotDevice slotDevice){
+        if(slotDevices != null && !slotDevices.contains(slotDevice)) {
+            slotDevices.add(slotDevice);
+            notifyObservers(slotDevice, ObserverEnum.DRAW);
+            fireUpdatePerformed(slotDevice);
+        }
+    }
+
+    public void startRotateState() {
+        if(managerState == null){
+            managerState = new ManagerState(this);
+        }
+        managerState.setRotateState();
+    }
+
+    public void startRectangleState() {
+        if(managerState == null){
+            managerState = new ManagerState(this);
+        }
+        managerState.setRectangleState();
+    }
+
+    public void startTriangleState() {
+        if(managerState == null){
+            managerState = new ManagerState(this);
+        }
+        managerState.setTriangleState();
+    }
+
+    public void startCircleState() {
+        if(managerState == null){
+            managerState = new ManagerState(this);
+        }
+        managerState.setCircleState();
+    }
+
+    public void startResizeState() {
+        if(managerState == null){
+            managerState = new ManagerState(this);
+        }
+        managerState.setResizeState();
+    }
+}

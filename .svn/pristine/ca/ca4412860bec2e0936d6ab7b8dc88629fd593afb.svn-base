@@ -1,0 +1,27 @@
+package gerudok.view;
+
+import gerudok.model.Page;
+import gerudok.observer.MyObserver;
+
+import javax.swing.*;
+
+public class PageView extends JPanel implements MyObserver {
+
+    private JLabel lblName;
+    private Page page;
+
+    public PageView(Page page){
+        this.page = page;
+        page.addObserver(this);
+        lblName = new JLabel(this.page.toString());
+    }
+
+    @Override
+    public void update(Object var1) {
+        if(var1 instanceof String){
+            lblName.setText((String)var1);
+        }else if(var1 instanceof Page){
+            //remove page salje samu sebe kao notifikaciju
+        }
+    }
+}

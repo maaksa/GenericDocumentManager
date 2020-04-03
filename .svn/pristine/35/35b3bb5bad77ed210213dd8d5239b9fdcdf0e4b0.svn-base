@@ -1,0 +1,38 @@
+package gerudok.model;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Document extends DefaultMutableTreeNode {
+
+    private List<Page> pages;
+    private String name;
+
+
+    public Document(String name){
+        super();
+        this.name = name;
+        pages = new ArrayList<>();
+    }
+
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
+    public void addPage(Page page){
+        pages.add(page);
+        page.setName(this.name + " - Stranica - " + pages.size());
+    }
+
+    public void removePage(Page page){
+        pages.remove(page);
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+}

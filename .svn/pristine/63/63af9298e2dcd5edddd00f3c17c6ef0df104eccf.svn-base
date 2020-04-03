@@ -1,0 +1,12 @@
+package gerudok.model.factory;
+
+import gerudok.model.Document;
+import gerudok.model.Project;
+
+public class FactoryPage extends FactoryNode{
+
+    @Override
+    public void createNode(Object object) {
+
+    }
+}

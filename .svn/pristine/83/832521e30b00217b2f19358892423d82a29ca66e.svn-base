@@ -1,0 +1,28 @@
+package mymenubar;
+
+import mymenubar.mymenuabout.MyMenuAboutView;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class MyMenuBar extends JMenuBar {
+
+    private JMenu file;
+    private JMenu help;
+    private MyMenuAboutView about;
+
+    public MyMenuBar(){
+        super();
+
+        file = new JMenu("File");
+        help = new JMenu("Help");
+        about = new MyMenuAboutView();
+
+        help.add(about);
+
+        this.add(file);
+        this.add(help);
+
+    }
+
+}

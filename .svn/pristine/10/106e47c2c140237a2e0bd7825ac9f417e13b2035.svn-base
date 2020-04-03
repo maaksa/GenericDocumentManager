@@ -1,0 +1,22 @@
+package gerudok.actions;
+
+import gerudok.app.MyJFrame;
+import gerudok.model.Project;
+
+import java.awt.event.ActionEvent;
+
+public class NewProjectAction extends MyAbstractAction{
+
+    public NewProjectAction(){
+        putValue(NAME, "New project");
+        putValue(SMALL_ICON, loadIcon("new-file-icon.png"));
+        putValue(SHORT_DESCRIPTION, "New project");
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        Project project = new Project(" ");
+        MyJFrame.getInstance().getWorkspaceTree().addProject(project);
+
+    }
+}

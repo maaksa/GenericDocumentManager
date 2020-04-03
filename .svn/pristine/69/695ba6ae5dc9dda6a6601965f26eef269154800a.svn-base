@@ -1,0 +1,19 @@
+package gerudok.model.factory;
+
+import gerudok.app.MyJFrame;
+import gerudok.model.Document;
+import gerudok.model.Project;
+
+import javax.swing.*;
+
+public class FactoryProject extends FactoryNode{
+
+    @Override
+    public void createNode(Object path) {
+        Document doc = new Document("Document");
+        ((Project) path).add(doc);
+
+        SwingUtilities.updateComponentTreeUI(MyJFrame.getInstance().getWorkspaceTree());
+        MyJFrame.getInstance().getWorkspaceTree().expandPath(MyJFrame.getInstance().getWorkspaceTree().getSelectionPath());
+    }
+}

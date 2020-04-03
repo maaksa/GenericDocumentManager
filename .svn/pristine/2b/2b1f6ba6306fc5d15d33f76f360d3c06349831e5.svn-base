@@ -1,0 +1,66 @@
+package gerudok.errorhandler;
+
+import gerudok.app.MyJFrame;
+import gerudok.observer.MyErrorObserver;
+
+import javax.swing.*;
+
+public class ErrorHandlerView implements MyErrorObserver {
+    private ErrorHandler errorHandler;
+    private JFrame mainFrame;
+
+    public ErrorHandlerView(ErrorHandler errorHandler){
+        this.errorHandler = errorHandler;
+        this.errorHandler.addObserver(this);
+    }
+
+    private void workspaceDeleteException(String message){
+        JOptionPane.showMessageDialog(mainFrame, message, "Alert", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void renameNodeException(String message){
+        JOptionPane.showMessageDialog(mainFrame, message, "Warning", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void renameWorkspaceException(String message){
+        JOptionPane.showMessageDialog(mainFrame, message, "Warning", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void noSelectedTabError(String message){
+        JOptionPane.showMessageDialog(null, message, "Warning", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void sameNameException(String message){
+        JOptionPane.showMessageDialog(mainFrame, message, "Warning", JOptionPane.ERROR_MESSAGE);
+    }
+
+    private void noSelectedNodeError(String message){
+        JOptionPane.showMessageDialog(null, message, "Warning", JOptionPane.ERROR_MESSAGE);
+    }
+
+    @Override
+    public void update(Object var1, ExceptionEnum changeType) {
+        String message = (String)var1;
+
+        switch (changeType){
+            case NODE_SAME_NAME:
+                sameNameException(message);
+                break;
+            case NO_SELECTED_DELETE:
+                noSelectedNodeError(message);
+                break;
+            case NO_SELECTED_TAB:
+                noSelectedTabError(message);
+                break;
+            case WORKSPACE_DELETE:
+                workspaceDeleteException(message);
+                break;
+            case WORKSPACE_RENAME:
+                renameWorkspaceException(message);
+                break;
+            case NODE_RENAME_EMPTY:
+                renameNodeException(message);
+                break;
+        }
+    }
+}

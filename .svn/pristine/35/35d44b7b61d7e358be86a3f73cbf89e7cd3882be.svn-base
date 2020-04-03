@@ -1,0 +1,16 @@
+package gerudok.gui;
+
+import gerudok.app.MyJFrame;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class MyToolBar extends JToolBar {
+
+    public MyToolBar() {
+        super();
+        add(MyJFrame.getInstance().getActionManager().getNewProjectAction());
+        add(MyJFrame.getInstance().getActionManager().getOpenProjectAction());
+
+    }
+}

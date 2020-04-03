@@ -1,0 +1,15 @@
+package gerudok.actions;
+
+import gerudok.app.MyJFrame;
+
+import java.awt.event.ActionEvent;
+
+public class SelectAction extends MyAbstractAction {
+
+
+    @Override
+    public void actionPerformed(ActionEvent actionEvent) {
+        MyJFrame.getInstance().getWorkspaceView().getCurrentProjectView().
+                getSelectedDocumentView().getFocusPage().startSelectState();
+    }
+}

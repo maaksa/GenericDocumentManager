@@ -1,0 +1,66 @@
+package gerudok.errorhandler;
+
+import gerudok.app.MyJFrame;
+import gerudok.observer.MyErrorObserver;
+
+import javax.swing.*;
+
+public class ErrorHandlerView implements MyErrorObserver {
+    private ErrorHandler errorHandler;
+    private JFrame mainFrame;
+
+    public ErrorHandlerView(MyJFrame mainFrame){
+        this.mainFrame = mainFrame;
+        errorHandler.addObserver(this);
+    }
+
+    public void workspaceDeleteException(String message){
+        JOptionPane.showMessageDialog(mainFrame, message, "Alert", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public int nodeDeleteQuestion(String message){
+        int answ = JOptionPane.showConfirmDialog(mainFrame, message);
+        if(answ == JOptionPane.YES_OPTION)
+            return 1;
+        else
+            return 0;
+    }
+
+    public void renameNodeException(String message){
+        JOptionPane.showMessageDialog(mainFrame, message, "Warning", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void renameWorkspaceException(String message){
+        JOptionPane.showMessageDialog(mainFrame, message, "Warning", JOptionPane.ERROR_MESSAGE);
+    }
+
+    public void sameNameException(String message){
+        JOptionPane.showMessageDialog(mainFrame, message, "Warning", JOptionPane.ERROR_MESSAGE);
+    }
+
+    @Override
+    public void update(Object var1, ExceptionEnum changeType) {
+        String message = (String)var1;
+
+        switch (changeType){
+            case NODE_SAME_NAME:
+                sameNameException(message);
+                break;
+            case NO_SELECTED_TAB:
+                ///
+                break;
+            case WORKSPACE_DELETE:
+                workspaceDeleteException(message);
+                break;
+            case WORKSPACE_RENAME:
+                renameWorkspaceException(message);
+                break;
+            case NODE_RENAME_EMPTY:
+                renameNodeException(message);
+                break;
+            case NODE_DELETE_QUESTION:
+                nodeDeleteQuestion(message);
+                break;
+        }
+    }
+}

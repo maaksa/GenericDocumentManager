@@ -1,0 +1,42 @@
+package gerudok.gui;
+
+import gerudok.app.MyJFrame;
+import gerudok.model.Document;
+import gerudok.model.Project;
+import gerudok.view.DocumentView;
+
+import javax.swing.*;
+
+public class MyJTabbedPane extends JTabbedPane{
+
+    private Project project;
+
+    public MyJTabbedPane(){
+        super();
+       /*this.project = (Project) MyJFrame.getInstance().getWorkspaceTree().getSelectionPath().getLastPathComponent();
+        int n = project.getDocumentsCount();
+        for(int i = 0; i < n; i++){
+            Document document = project.getDocument(i);
+            DocumentView documentView = new DocumentView(document);
+            this.addTab(documentView.getName(), documentView);
+        }
+        */
+    }
+
+
+    public void setProject(Project project){
+        this.removeAll();
+        this.project = (Project) MyJFrame.getInstance().getWorkspaceTree().getSelectionPath().getLastPathComponent();
+        int n = project.getDocumentsCount();
+        for(int i = 0; i < n; i++){
+            Document document = project.getDocument(i);
+            DocumentView documentView = new DocumentView(document);
+            this.addTab(documentView.getName(), documentView);
+        }
+    }
+
+    public Project getProject(){
+        return project;
+    }
+
+}

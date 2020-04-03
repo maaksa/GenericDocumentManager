@@ -1,0 +1,39 @@
+package gerudok.state;
+
+import gerudok.model.Page;
+import gerudok.model.elements.CircleElement;
+import gerudok.model.elements.TriangleElement;
+
+import java.awt.*;
+import java.awt.event.MouseEvent;
+
+public class TriangleState extends State {
+
+    private Page mediator;
+
+    public TriangleState(Page page){
+        mediator = page;
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if(e.getButton() == MouseEvent.BUTTON1){
+            Point point = e.getPoint();
+            Paint paint = new Color(255,255,255);
+
+            TriangleElement triangleElement = new TriangleElement(point,
+                    new Dimension(70,50), new BasicStroke(2f), paint, 0);
+            mediator.addSlotDevice(triangleElement);
+        }
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+}

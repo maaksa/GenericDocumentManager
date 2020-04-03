@@ -1,0 +1,19 @@
+package gerudok.gui;
+
+import gerudok.app.MyJFrame;
+
+import javax.swing.*;
+
+public class MyPopupMenu {
+    WorkspaceTree tree = MyJFrame.getInstance().getWorkspaceTree();
+    JPopupMenu popup;
+
+    public MyPopupMenu() {
+        popup = new JPopupMenu();
+        PopupHandler handler = new PopupHandler(tree, popup);
+        popup.add(MyJFrame.getInstance().getActionManager().getDeleteNodeAction());
+        popup.add(MyJFrame.getInstance().getActionManager().getNewNodeAction());
+        popup.add(MyJFrame.getInstance().getActionManager().getRenameNodeAction());
+    }
+}
+

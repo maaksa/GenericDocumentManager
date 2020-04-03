@@ -1,0 +1,15 @@
+package gerudok.gui;
+
+import gerudok.app.MyJFrame;
+
+import javax.swing.*;
+
+public class Palette extends JToolBar {
+
+    public Palette(){
+        super(JToolBar.VERTICAL);
+        add(MyJFrame.getInstance().getActionManager().getCircleAction());
+        add(MyJFrame.getInstance().getActionManager().getTriangleAction());
+        add(MyJFrame.getInstance().getActionManager().getRectangleAction());
+    }
+}

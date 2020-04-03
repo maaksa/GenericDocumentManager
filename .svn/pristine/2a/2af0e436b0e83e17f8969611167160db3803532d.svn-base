@@ -1,0 +1,76 @@
+package gerudok.actions.manager;
+
+import gerudok.actions.*;
+
+public class ActionManager {
+
+    private AboutAction aboutAction;
+
+    private CloseAction closeAction;
+    private CloseAllAction closeAllAction;
+
+    private DeleteNodeAction deleteNodeAction;
+
+    private NewNodeAction newNodeAction;
+
+    private RenameNodeAction renameNodeAction;
+
+
+    public ActionManager() {
+        aboutAction = new AboutAction();
+        closeAction = new CloseAction();
+        closeAllAction = new CloseAllAction();
+        deleteNodeAction = new DeleteNodeAction();
+        newNodeAction = new NewNodeAction();
+        renameNodeAction = new RenameNodeAction();
+    }
+
+    public AboutAction getAboutAction() {
+        return aboutAction;
+    }
+
+    public void setAboutAction(AboutAction aboutAction) {
+        this.aboutAction = aboutAction;
+    }
+
+    public CloseAction getCloseAction() {
+        return closeAction;
+    }
+
+    public void setCloseAction(CloseAction closeAction) {
+        this.closeAction = closeAction;
+    }
+
+    public CloseAllAction getCloseAllAction() {
+        return closeAllAction;
+    }
+
+    public void setCloseAllAction(CloseAllAction closeAllAction) {
+        this.closeAllAction = closeAllAction;
+    }
+
+    public DeleteNodeAction getDeleteNodeAction() {
+        return deleteNodeAction;
+    }
+
+    public void setDeleteNodeAction(DeleteNodeAction deleteNodeAction) {
+        this.deleteNodeAction = deleteNodeAction;
+    }
+
+    public NewNodeAction getNewNodeAction() {
+        return newNodeAction;
+    }
+
+    public void setNewNodeAction(NewNodeAction newNodeAction) {
+        this.newNodeAction = newNodeAction;
+    }
+
+    public RenameNodeAction getRenameNodeAction() {
+        return renameNodeAction;
+    }
+
+    public void setRenameNodeAction(RenameNodeAction renameNodeAction) {
+        this.renameNodeAction = renameNodeAction;
+    }
+
+}

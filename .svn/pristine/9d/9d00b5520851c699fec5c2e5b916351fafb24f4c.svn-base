@@ -1,0 +1,140 @@
+package gerudok.model;
+
+import gerudok.app.MyJFrame;
+import gerudok.errorhandler.ExceptionEnum;
+import gerudok.model.workspace.Workspace;
+import gerudok.observer.MyObservable;
+import gerudok.observer.MyObserver;
+import gerudok.observer.ObserverEnum;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Project extends DefaultMutableTreeNode implements MyObservable {
+
+    private String name;
+    private List<Document> documents;
+    private List<MyObserver> observers;
+
+    public Project(String name){
+        super();
+        this.name = name;
+        documents = new ArrayList<>();
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
+    @Override
+    public void add(MutableTreeNode newChild){
+        if(documents == null){
+            documents = new ArrayList<>();
+        }
+        if(newChild != null && newChild instanceof Document && !documents.contains((Document) newChild)){
+            Document document = (Document) newChild;
+            documents.add(document);
+            super.add(document);
+            document.setName(document.getName());
+            notifyObservers(document, ObserverEnum.ADD);
+        }
+    }
+
+    //koristi se kada korisnik postavlja ime zbog handle-ovanja error message-a
+    public void renameProject(String name){
+
+        if(name == null || name.isEmpty()){
+            MyJFrame.getInstance().getErrorHandler().generateError(ExceptionEnum.NODE_RENAME_EMPTY);
+            return;
+        }
+
+        //ako ne postoji postavlja ime
+        if(checkIfNameExists(name) == false) {
+            this.name = name;
+            notifyObservers(name, ObserverEnum.NAME_CHANGE);
+        } else{
+            //ako postoji ime izbacuje poruku i prekida dodelu imena
+            MyJFrame.getInstance().getErrorHandler().generateError(ExceptionEnum.NODE_SAME_NAME);
+            return;
+        }
+    }
+
+    //koristim kada ja setujem ime
+    public void setName(String name){
+        if(name == null || name.isEmpty()){
+            return;
+        }
+
+        int sameNameCounter = 1;
+        while (checkIfNameExists(name)){
+            if(sameNameCounter == 1){
+                name = name + " - " + ++sameNameCounter;
+                continue;
+            }
+            name = name.substring(0, name.indexOf('-')) + "- " + ++sameNameCounter;
+        }
+        this.name = name;
+        notifyObservers(name, ObserverEnum.NAME_CHANGE);
+    }
+
+    //proverava da li ime vec postoji u listi projekata i vraca true ako postoji
+    private boolean checkIfNameExists(String name) {
+        Workspace workspace = (Workspace) this.getParent();
+        List<Project> projects = workspace.getProjects();
+
+        for (Project p : projects) {
+            if (p.toString().equals(name) && !p.equals(this)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    public void removeDocument(Document document){
+
+        if(document != null && documents !=null && !documents.isEmpty()) {
+            notifyObservers(document, ObserverEnum.REMOVE);
+            super.remove(document);
+            documents.remove(document);
+        }
+        //todo napravi da automatski izbacuje iz obe liste
+    }
+
+    public Document getDocument(int arg0){
+        return documents.get(arg0);
+    }
+
+    public List<Document> getDocuments() {
+        return documents;
+    }
+
+    @Override
+    public void addObserver(MyObserver var1) {
+        if(observers == null){
+            observers = new ArrayList<>();
+        }
+        if(var1 != null && !observers.contains(var1)){
+            observers.add(var1);
+        }
+    }
+
+    @Override
+    public void removeObserver(MyObserver var1) {
+        if(var1 != null && observers != null){
+            observers.remove(var1);
+        }
+    }
+
+    @Override
+    public void notifyObservers(Object var1, ObserverEnum changeType) {
+        if(observers != null){
+            for (MyObserver observer : observers) {
+                observer.update(var1, changeType);
+            }
+        }
+    }
+}

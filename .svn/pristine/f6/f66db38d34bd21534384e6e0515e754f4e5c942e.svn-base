@@ -1,0 +1,40 @@
+package gerudok.actions;
+
+import gerudok.app.MyJFrame;
+import gerudok.gui.WorkspaceTree;
+import gerudok.model.Document;
+import gerudok.model.Page;
+import gerudok.model.Project;
+
+import javax.swing.tree.TreePath;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class RenameNodeAction extends MyAbstractAction implements ActionListener {
+
+    public RenameNodeAction() {
+        super();
+        putValue(NAME, "Rename");
+        putValue(SMALL_ICON, loadIcon("Actions-document-edit-icon.png"));
+        putValue(SHORT_DESCRIPTION, "Rename");
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        WorkspaceTree tree = MyJFrame.getInstance().getWorkspaceTree();
+        TreePath path = tree.getSelectionPath();
+        if (path != null) {
+            tree.startEditingAtPath(path);
+            Object object = MyJFrame.getInstance().getWorkspaceTree().getLastSelectedPathComponent();
+            String NewName = e.getActionCommand();
+            if (object instanceof Project) {
+                ((Project) object).setName(NewName);
+            }
+            else if (object instanceof Document) {
+                ((Document) object).setName(NewName);
+            }
+            else if (object instanceof Page) {
+                ((Page) object).setName(NewName);
+            }
+        }
+    }
+}

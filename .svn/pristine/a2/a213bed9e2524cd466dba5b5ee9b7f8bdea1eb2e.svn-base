@@ -1,0 +1,14 @@
+package gerudok.model.elements;
+
+import gerudok.view.painters.TrianglePainter;
+
+import java.awt.*;
+import java.awt.geom.Point2D;
+
+public class TriangleElement extends SlotDevice {
+    public TriangleElement(Point2D position, Dimension dimension, Stroke stroke, Paint paint, double angle) {
+        super(position, dimension, stroke, paint, angle);
+        slotPainter = new TrianglePainter(this);
+    }
+
+}

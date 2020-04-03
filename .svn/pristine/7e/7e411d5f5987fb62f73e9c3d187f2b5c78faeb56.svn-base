@@ -1,0 +1,44 @@
+package gerudok.view;
+
+import gerudok.model.Document;
+import gerudok.observer.MyObserver;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class DocumentView extends JInternalFrame implements MyObserver {
+
+    private Document document;
+
+    public DocumentView(Document document) {
+
+        super("" , true, true, true, true);
+        this.document = document;
+        document.addObserver(this);
+        setIconifiable(true);
+        setClosable(true);
+        setSize(400,400);
+        setTitle(this.document.toString());
+        this.setLayout(new GridLayout());
+        setVisible(true);
+    }
+
+   /* public void setDocument(Document document){
+        this.document.removeObserver(this);
+        this.document = document;
+        this.document.addObserver(this);
+        this.setName(document.getName());
+        setTitle(document.getName());
+    }
+*/
+    public Document getDocument() {
+        return document;
+    }
+
+    @Override
+    public void update(Object var1) {
+        if(var1 instanceof String){
+            setTitle((String)var1);
+        }
+    }
+}

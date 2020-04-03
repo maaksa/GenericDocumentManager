@@ -1,0 +1,65 @@
+package gerudok.controller;
+
+import com.sun.source.tree.Tree;
+import gerudok.app.MyJFrame;
+import gerudok.model.Document;
+import gerudok.model.Project;
+
+import javax.swing.*;
+import javax.swing.tree.TreePath;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+public class WorkspaceTreeMouseController implements MouseListener {
+    @Override
+    public void mouseClicked(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent mouseEvent) {
+
+        if(mouseEvent.getClickCount() == 2) {
+            TreePath path = MyJFrame.getInstance().getWorkspaceTree().getSelectionPath();
+            if (path != null){
+                if (path.getLastPathComponent() instanceof Project) {
+                    //ako je dupli klik na projekat ponovo se otvaraju
+                    //svi zatvoreni dokumenti i postavlja se u fokus
+                    MyJFrame.getInstance().getWorkspaceView().getCurrentProjectView().initialiseJTabbedPane();
+
+                } else if (path.getLastPathComponent() instanceof Document) {
+                    //menja trenutni projectview na onaj kojem pripada odgovarajuci dokumentview
+                    MyJFrame.getInstance().getWorkspaceView().
+                            changeProjectView((Project) ((Document) path.getLastPathComponent()).getParent());
+
+                    //menja selektovani tab na trenutnom projectview
+                    MyJFrame.getInstance().getWorkspaceView().getCurrentProjectView().
+                            setSelectedTab((Document) path.getLastPathComponent());
+                }
+            }
+            //proverava da li je desni klik i stavlja selektovanu putanju
+        }else if (SwingUtilities.isRightMouseButton(mouseEvent)) {
+
+            //trazi selektovani path po koordinatama
+            TreePath selPath = MyJFrame.getInstance().getWorkspaceTree().
+                    getPathForLocation(mouseEvent.getX(), mouseEvent.getY());
+            MyJFrame.getInstance().getWorkspaceTree().setSelectionPath(selPath);
+        }
+    }
+
+
+    @Override
+    public void mouseReleased(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent mouseEvent) {
+
+    }
+}

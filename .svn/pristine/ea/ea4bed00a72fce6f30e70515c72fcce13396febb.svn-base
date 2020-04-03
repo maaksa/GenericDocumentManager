@@ -1,0 +1,15 @@
+package gerudok.gui;
+
+import gerudok.controller.MyMenuAboutController;
+
+import javax.swing.*;
+
+public class MyMenuAboutView extends JMenuItem {
+
+    public MyMenuAboutView(){
+        super();
+        this.setText("About");
+        this.addActionListener(new MyMenuAboutController());
+    }
+
+}

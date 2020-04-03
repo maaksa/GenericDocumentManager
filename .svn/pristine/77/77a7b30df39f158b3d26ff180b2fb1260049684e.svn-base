@@ -1,0 +1,24 @@
+package gerudok.view.painters;
+
+import gerudok.model.elements.SlotElement;
+import gerudok.model.elements.TriangleElement;
+
+import java.awt.geom.GeneralPath;
+///TrianglePainter zaduzen za definisanje Shape objekta koji predstavlja dati element
+public class TrianglePainter extends SlotDevicePainter {
+
+    public TrianglePainter(SlotElement slotElement) {
+        super(slotElement);
+        TriangleElement triangleElement = (TriangleElement) slotElement;
+        shape = new GeneralPath();
+
+        ((GeneralPath)shape).moveTo(triangleElement.getPosition().getX(), triangleElement.getPosition().getY());
+
+        ((GeneralPath)shape).lineTo(triangleElement.getPosition().getX() + triangleElement.getSize().width, triangleElement.getPosition().getY());
+
+        ((GeneralPath)shape).lineTo(triangleElement.getPosition().getX() + triangleElement.getSize().width / 2, triangleElement.getPosition().getY() - triangleElement.getSize().height);
+
+        ((GeneralPath)shape).closePath();
+    }
+
+}

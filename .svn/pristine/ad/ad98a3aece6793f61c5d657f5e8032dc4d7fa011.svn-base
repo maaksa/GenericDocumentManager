@@ -1,0 +1,52 @@
+package gerudok.actions;
+
+import gerudok.app.MyJFrame;
+import gerudok.model.Document;
+import gerudok.model.Page;
+import gerudok.model.Project;
+import gerudok.model.workspace.Workspace;
+
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+
+public class DeleteNodeAction extends MyAbstractAction {
+
+    public DeleteNodeAction(){
+        putValue(NAME, "Delete");
+        putValue(SMALL_ICON, loadIcon("Actions-document-close-icon.png"));
+        putValue(SHORT_DESCRIPTION, "Delete");
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        Object object = MyJFrame.getInstance().getWorkspaceTree().getLastSelectedPathComponent();
+
+        if(object instanceof Workspace){
+            JOptionPane.showMessageDialog(null, "Workspace can't be deleted");
+        }
+        if(object instanceof Project) {
+            int answ = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete " + object.toString() + "?");
+            if (answ == JOptionPane.YES_OPTION) {
+                Workspace workspace = (Workspace) ((Project) object).getParent();
+                workspace.removeProject((Project) object);
+            }
+        }
+            if (object instanceof Document) {
+                int answ = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete " + object.toString() + "?");
+                if (answ == JOptionPane.YES_OPTION) {
+                    Project project = (Project) ((Document) object).getParent();
+                    project.removeDocument((Document) object);
+                }
+            }
+            if (object instanceof Page) {
+                int answ = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete " + object.toString() + "?");
+                if (answ == JOptionPane.YES_OPTION) {
+                    Document document = (Document) ((Page) object).getParent();
+                    document.removePage((Page)object);
+                }
+            }
+        MyJFrame.getInstance().getWorkspaceTree().updateUI();
+        SwingUtilities.updateComponentTreeUI(MyJFrame.getInstance().getWorkspaceTree());
+    }
+}

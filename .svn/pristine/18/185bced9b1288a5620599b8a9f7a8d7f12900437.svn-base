@@ -1,0 +1,16 @@
+package mymenubar.mymenuabout;
+
+import myjframe.MyJFrame;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class MyMenuAboutView extends JMenuItem {
+
+    public MyMenuAboutView(){
+        super();
+        this.setText("About");
+        this.addActionListener(new MyMenuAboutController());
+    }
+
+}

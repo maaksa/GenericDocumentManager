@@ -1,0 +1,19 @@
+package gerudok.actions;
+
+import gerudok.app.MyJFrame;
+
+import java.awt.event.ActionEvent;
+
+public class CloseAction extends MyAbstractAction{
+
+    public CloseAction(){
+        putValue(NAME, "Close tab");
+        putValue(SMALL_ICON, loadIcon("Actions-project-development-close-icon.png"));
+        putValue(SHORT_DESCRIPTION, "Close tab");
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent actionEvent) {
+            MyJFrame.getInstance().getWorkspaceView().closeProjectViewTab();
+    }
+}

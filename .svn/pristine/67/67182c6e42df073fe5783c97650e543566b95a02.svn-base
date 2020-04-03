@@ -1,0 +1,66 @@
+package gerudok.model.elements;
+
+import gerudok.view.painters.SlotElementPainter;
+
+import java.awt.*;
+import java.io.Serializable;
+
+public abstract class SlotElement implements Serializable {
+
+    protected Paint paint;//unutrasnjost elementa
+    protected SerializableStroke stroke;//definise izgled linije za iscrtavanje
+    protected String name;
+    protected SlotElementPainter slotPainter;//instanciranje SlotElemPaintera izvrsavaju elementi prilikom svoje konstrukcije
+
+    //meootda za kolinranje elemenata
+    abstract public SlotElement clone();
+
+    public SlotElement(Paint paint, Stroke stroke){
+        this.paint = paint;
+        this.stroke = new SerializableStroke(stroke);
+    }
+
+    public SlotElement(SlotElement element){
+        this.paint = element.paint;
+        this.stroke = element.stroke;
+        this.name = element.name;
+        this.slotPainter = element.slotPainter;
+    }
+
+    public SlotElementPainter getSlotPainter() {
+        return slotPainter;
+    }
+
+    public Stroke getStroke() {
+        return stroke;
+    }
+
+    public void setStroke(Stroke stroke) {
+        this.stroke = new SerializableStroke(stroke);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Paint getPaint() {
+        return paint;
+    }
+
+    public void setPaint(Paint paint) {
+        this.paint = paint;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+
+    public void setSlotPainter(SlotElementPainter slotPainter) {
+        this.slotPainter = slotPainter;
+    }
+}

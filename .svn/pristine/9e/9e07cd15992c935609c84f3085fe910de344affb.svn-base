@@ -1,0 +1,57 @@
+package gerudok.model;
+
+import gerudok.observer.MyObservable;
+import gerudok.observer.MyObserver;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Page extends DefaultMutableTreeNode implements MyObservable {
+
+    private String name;
+    private List<MyObserver> observers;
+
+
+    public Page(String name){
+        this.name = name;
+    }
+
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
+    public void setName(String name){
+        this.name = name;
+        notifyObservers(name);
+    }
+
+    @Override
+    public void addObserver(MyObserver var1) {
+        if(observers == null){
+            observers = new ArrayList<>();
+        }
+        if(var1 != null && !observers.contains(var1)){
+            observers.add(var1);
+        }
+    }
+
+    @Override
+    public void removeObserver(MyObserver var1) {
+        if(var1 != null && observers != null){
+            observers.remove(var1);
+        }
+    }
+
+    @Override
+    public void notifyObservers(Object var1) {
+        if(observers != null){
+            for (MyObserver observer : observers) {
+                observer.update(var1);
+            }
+        }
+    }
+
+}

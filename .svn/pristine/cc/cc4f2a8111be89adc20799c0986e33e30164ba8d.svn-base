@@ -1,0 +1,83 @@
+package gerudok.controller;
+
+import gerudok.app.MyJFrame;
+import gerudok.gui.MyJTabbedPane;
+import gerudok.model.Document;
+import gerudok.model.Page;
+import gerudok.model.Project;
+
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+public class WorkspaceTreeController implements TreeSelectionListener, MouseListener, TreeModelListener {
+    @Override
+    public void valueChanged(TreeSelectionEvent e) {
+        TreePath path = e.getPath();
+        if(path.getLastPathComponent() instanceof Project) {
+            MyJTabbedPane temp = new MyJTabbedPane();
+            temp.setProject((Project)path.getLastPathComponent());
+            MyJFrame.getInstance().setMyJTabbedPane(temp);
+        }
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent mouseEvent) {
+        if(mouseEvent.getClickCount() ==  2){
+
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent mouseEvent) {
+
+    }
+
+    @Override
+    public void treeNodesChanged(TreeModelEvent treeModelEvent) {
+        String name = treeModelEvent.toString();
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) treeModelEvent.getTreePath().getLastPathComponent();
+        if(node instanceof Project){
+            ((Project) node).setName(name);
+        }else if(node instanceof Document){
+            ((Document) node).setName(name);
+        }else if(node instanceof Page){
+            ((Page) node).setName(name);
+        }
+    }
+
+    @Override
+    public void treeNodesInserted(TreeModelEvent treeModelEvent) {
+
+    }
+
+    @Override
+    public void treeNodesRemoved(TreeModelEvent treeModelEvent) {
+
+    }
+
+    @Override
+    public void treeStructureChanged(TreeModelEvent treeModelEvent) {
+
+    }
+}

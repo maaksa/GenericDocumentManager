@@ -1,0 +1,12 @@
+package gerudok.observer;
+
+import gerudok.errorhandler.ExceptionEnum;
+
+public interface MyErrorObservable {
+
+    void addObserver(MyErrorObserver var1);
+
+    void removeObserver(MyErrorObserver var1);
+
+    void notifyObservers(Object var1, ExceptionEnum changeType);
+}

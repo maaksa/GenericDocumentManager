@@ -1,0 +1,39 @@
+package gerudok.view.painters;
+
+import gerudok.model.elements.SlotElement;
+
+import java.awt.*;
+
+public class SlotDevicePainter extends SlotElementPainter {
+
+    protected Shape shape;
+
+    public SlotDevicePainter(SlotElement slotElement) {
+        super(slotElement);
+    }
+
+    @Override
+    //sluzi za iscrtavanje elemenata u Graphics2D klasi
+    public void paint(Graphics2D g, SlotElement slotElement) {
+        g.setPaint(Color.BLACK);
+        g.setPaint(slotElement.getPaint());
+        g.setStroke(slotElement.getStroke());
+        g.draw(getShape());
+        g.fill(getShape());
+    }
+
+    @Override
+    //proverava da li se element nalazi na zadatoj poziciji
+    public boolean isElementAt(Point point) {
+        return getShape().contains(point);
+    }
+
+    public Shape getShape() {
+        return shape;
+    }
+
+    public void setShape(Shape shape) {
+        this.shape = shape;
+    }
+
+}

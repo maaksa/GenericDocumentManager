@@ -1,0 +1,4 @@
+package gerudok.actions;
+
+public class NewDocumentAction {
+}

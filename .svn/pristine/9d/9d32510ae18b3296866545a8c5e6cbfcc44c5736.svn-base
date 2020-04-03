@@ -1,0 +1,27 @@
+package gerudok.view;
+
+import gerudok.model.Project;
+import gerudok.observer.MyObserver;
+
+import javax.swing.*;
+import java.awt.*;
+
+public class ProjectView extends JLabel implements MyObserver {
+
+    private Project project;
+
+    public ProjectView(Project project){
+        this.project = project;
+        project.addObserver(this);
+        this.setText(project.toString());
+        this.setPreferredSize(new Dimension(100,50));
+    }
+
+
+    @Override
+    public void update(Object var1) {
+        if(var1 instanceof String){
+            this.setText((String)var1);
+        }
+    }
+}

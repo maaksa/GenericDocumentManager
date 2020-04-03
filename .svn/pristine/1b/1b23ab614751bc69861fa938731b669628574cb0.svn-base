@@ -1,0 +1,89 @@
+package gerudok.model.workspace;
+
+import gerudok.model.Project;
+import gerudok.observer.MyObservable;
+import gerudok.observer.MyObserver;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+
+public class Workspace extends DefaultMutableTreeNode implements MyObservable {
+
+    private List<MyObserver> observers;
+    private List<Project> projects;
+
+    public Workspace(){
+        super();
+        projects = new ArrayList<>();
+        observers = new ArrayList<>();
+    }
+
+    public void addProject(Project project){
+        projects.add(project);
+        project.setName("Projekat -" + projects.size());
+    }
+
+    public String toString(){
+        return "Workspace";
+    }
+
+    public TreeNode getChildAt(int arg0) {
+        return getProject(arg0);
+
+    }
+
+    public int getChildCount() {
+        return getProjectsCount();
+    }
+
+    public TreeNode getParent() {
+        return null;
+    }
+
+    public int getIndex(TreeNode arg0) {
+        return getProjectIndex((Project) arg0);
+    }
+
+    public boolean getAllowsChildren() {
+        return true;
+    }
+
+    public boolean isLeaf() {
+        return false;
+    }
+
+    public Enumeration<TreeNode> children() {
+        return (Enumeration<TreeNode>) projects;
+    }
+
+    public Project getProject(int index) {
+        return projects.get(index);
+    }
+
+    public int getProjectIndex(Project project) {
+        return projects.indexOf(project);
+    }
+    public int getProjectsCount() {
+        return projects.size();
+    }
+
+    @Override
+    public void addObserver(MyObserver var1) {
+        observers.add(var1);
+    }
+
+    @Override
+    public void removeObserver(MyObserver var1) {
+        observers.remove(var1);
+    }
+
+    @Override
+    public void notifyObservers(Object var1) {
+        for (MyObserver observer : observers) {
+            observer.update(var1);
+        }
+    }
+}

@@ -1,0 +1,79 @@
+package gerudok.actions;
+
+import gerudok.app.MyJFrame;
+import gerudok.gui.WorkspaceTree;
+import gerudok.model.Document;
+import gerudok.model.Page;
+import gerudok.model.Project;
+import gerudok.model.workspace.Workspace;
+
+import javax.swing.tree.TreePath;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+
+public class RenameNodeAction extends MyAbstractAction implements ActionListener {
+
+    public RenameNodeAction() {
+        super();
+        putValue(NAME, "Rename");
+        putValue(SMALL_ICON, loadIcon("Actions-document-edit-icon.png"));
+        putValue(SHORT_DESCRIPTION, "Rename");
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        WorkspaceTree tree = MyJFrame.getInstance().getWorkspaceTree();
+        TreePath path = tree.getSelectionPath();
+        if (path != null) {
+            tree.startEditingAtPath(path);
+            Object object = MyJFrame.getInstance().getWorkspaceTree().getLastSelectedPathComponent();
+            String newName = e.getActionCommand();
+            if (object instanceof Workspace) {
+                MyJFrame.getInstance().getExceptionManager().renameWorkspaceException();
+            }
+            if (object instanceof Project) {
+                if (newName == null) {
+                    MyJFrame.getInstance().getExceptionManager().renameNodeException(object);
+                }
+                Workspace workspace = (Workspace) ((Project) object).getParent();
+                List<Project> projects = workspace.getProjects();
+                for (Project p : projects) {
+                    if (p.toString().equals(newName)) {
+                        MyJFrame.getInstance().getExceptionManager().sameNameException(object);
+                        break;
+                    }
+                }
+                ((Project) object).setName(newName);
+            } else if (object instanceof Document) {
+                if (newName.isEmpty()) {
+                    MyJFrame.getInstance().getExceptionManager().renameNodeException(object);
+                }
+                Project project = (Project) ((Document) object).getParent();
+                List<Document> documents = project.getDocuments();
+                for (Document d : documents) {
+                    if (d.toString().equals(newName)) {
+                        MyJFrame.getInstance().getExceptionManager().sameNameException(object);
+                        break;
+                    }
+                }
+                ((Document) object).setName(newName);
+            } else if (object instanceof Page) {
+                if (newName.isEmpty()) {
+                    MyJFrame.getInstance().getExceptionManager().renameNodeException(object);
+                }
+                Document project = (Document) ((Page) object).getParent();
+                List<Page> pages = project.getPages();
+                for (Page p : pages) {
+                    if (p.toString().equals(newName)) {
+                        MyJFrame.getInstance().getExceptionManager().sameNameException(object);
+                        break;
+                    }
+                }
+                ((Page) object).setName(newName);
+            }
+        }
+    }
+
+}
+
+

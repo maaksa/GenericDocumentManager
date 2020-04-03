@@ -1,0 +1,83 @@
+package gerudok.view;
+
+import gerudok.app.MyJFrame;
+import gerudok.model.Project;
+import gerudok.model.workspace.Workspace;
+import gerudok.observer.MyObserver;
+import gerudok.observer.ObserverEnum;
+
+import javax.swing.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class WorkspaceView extends JPanel implements MyObserver {
+
+    private Workspace workspace;
+    private ProjectView currentProjectView;
+    private List<ProjectView> projectViews;
+
+    public WorkspaceView(Workspace workspace){
+
+        this.workspace = workspace;
+        projectViews = new ArrayList<>();
+        this.workspace.addObserver(this);
+    }
+
+
+    //Samo menja projectView koji je trenutno u panelu
+    public void changeProjectView(Project project){
+        if(currentProjectView != null && currentProjectView.getProject().equals(project))return;
+        for (ProjectView projectView : projectViews) {
+            if(project.equals(projectView.getProject())){
+                this.removeAll();
+                currentProjectView = projectView;
+                this.add(currentProjectView);
+                break;
+            }
+        }
+        MyJFrame.getInstance().revalidate();
+        repaint();
+        MyJFrame.getInstance().setVisible(true);
+    }
+
+
+    //pravi novi project view i ubacuje ga u listu ali ga ne stavlja u panel
+    private void initialiseProjectView(Project project) {
+        if(projectViews == null){
+            projectViews = new ArrayList<>();
+        }
+        ProjectView projectView = new ProjectView(project);
+        this.projectViews.add(projectView);
+    }
+
+    @Override
+    public void update(Object var1, ObserverEnum changeType) {
+        if(var1 instanceof Project){
+            Project project = (Project)var1;
+
+            if(changeType == ObserverEnum.REMOVE) {
+                if (projectViews != null && !projectViews.isEmpty()) {
+                    Iterator i = projectViews.iterator();
+                     while(i.hasNext()){
+                         ProjectView projectView = (ProjectView) i.next();
+
+                        if (projectView.getProject().equals(project)) {
+                            this.remove(projectView);
+                            i.remove();
+                            break;
+                        }
+                    }
+                }
+            }else if(changeType == ObserverEnum.ADD){
+                initialiseProjectView(project);
+            }
+        }
+        MyJFrame.getInstance().revalidate();
+        MyJFrame.getInstance().repaint();
+    }
+
+    public ProjectView getCurrentProjectView() {
+        return currentProjectView;
+    }
+}

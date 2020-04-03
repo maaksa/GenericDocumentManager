@@ -1,0 +1,36 @@
+package gerudok.model;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Project extends DefaultMutableTreeNode {
+
+    private String name;
+    private List<Document> documents;
+
+    public Project(String name){
+        super();
+        this.name = name;
+        documents = new ArrayList<>();
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
+    public void addDocument(Document document){
+        documents.add(document);
+        document.setName( this.name + " - Dokument - " + documents.size());
+    }
+
+    public void removeDocument(Document document){
+        documents.remove(document);
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+}

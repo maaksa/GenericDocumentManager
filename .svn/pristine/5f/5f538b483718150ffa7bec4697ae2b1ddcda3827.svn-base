@@ -1,0 +1,13 @@
+package gerudok.state;
+
+import java.awt.event.MouseEvent;
+
+// opisuje ponašanje zajedničko za sva stanja
+// sadrži sve metode bez njihove implementacije
+public class State {
+
+    public void mousePressed(MouseEvent e){}
+    public void mouseDragged(MouseEvent e){}
+    public void mouseReleased(MouseEvent e){}
+
+}

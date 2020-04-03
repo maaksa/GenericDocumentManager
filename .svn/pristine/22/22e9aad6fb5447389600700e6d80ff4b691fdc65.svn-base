@@ -1,0 +1,9 @@
+package gerudok.observer;
+
+import gerudok.errorhandler.ExceptionEnum;
+
+public interface MyErrorObserver {
+
+    void update(Object var1, ExceptionEnum changeType);
+
+}

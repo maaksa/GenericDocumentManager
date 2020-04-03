@@ -1,0 +1,16 @@
+package gerudok.model.elements;
+
+import gerudok.view.painters.RectanglePainter;
+
+import java.awt.*;
+import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+public class RectangleElement extends SlotDevice{
+
+    public RectangleElement(Point2D position, Dimension dimension, Stroke stroke, Paint paint, double angle) {
+        super(position, dimension, stroke, paint, angle);
+        slotPainter = new RectanglePainter(this);
+    }
+}

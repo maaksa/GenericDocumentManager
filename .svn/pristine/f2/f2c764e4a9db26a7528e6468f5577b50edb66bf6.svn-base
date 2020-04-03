@@ -1,0 +1,147 @@
+package gerudok.actions.manager;
+
+import gerudok.actions.*;
+
+public class ActionManager {
+
+    private AboutAction aboutAction;
+
+    private CloseAction closeAction;
+    private CloseAllAction closeAllAction;
+    private CloseDocumentAction closeDocumentAction;
+
+    private DeleteNodeAction deleteNodeAction;
+
+    private NewDocumentAction newDocumentAction;
+    private NewNodeAction newNodeAction;
+    private NewPageAction newPageAction;
+    private NewProjectAction newProjectAction;
+
+    private OpenProjectAction openProjectAction;
+    private OpenWorkSpaceAction openWorkSpaceAction;
+
+    private RenameNodeAction renameNodeAction;
+
+    private SaveProjectAction saveProjectAction;
+
+    public ActionManager() {
+        aboutAction = new AboutAction();
+        closeAction = new CloseAction();
+        closeAllAction = new CloseAllAction();
+        closeDocumentAction = new CloseDocumentAction();
+        deleteNodeAction = new DeleteNodeAction();
+        newDocumentAction = new NewDocumentAction();
+        newNodeAction = new NewNodeAction();
+        newPageAction = new NewPageAction();
+        newProjectAction = new NewProjectAction();
+        openProjectAction = new OpenProjectAction();
+        openWorkSpaceAction = new OpenWorkSpaceAction();
+        renameNodeAction = new RenameNodeAction();
+        saveProjectAction = new SaveProjectAction();
+    }
+
+    public AboutAction getAboutAction() {
+        return aboutAction;
+    }
+
+    public void setAboutAction(AboutAction aboutAction) {
+        this.aboutAction = aboutAction;
+    }
+
+    public CloseAction getCloseAction() {
+        return closeAction;
+    }
+
+    public void setCloseAction(CloseAction closeAction) {
+        this.closeAction = closeAction;
+    }
+
+    public CloseAllAction getCloseAllAction() {
+        return closeAllAction;
+    }
+
+    public void setCloseAllAction(CloseAllAction closeAllAction) {
+        this.closeAllAction = closeAllAction;
+    }
+
+    public CloseDocumentAction getCloseDocumentAction() {
+        return closeDocumentAction;
+    }
+
+    public void setCloseDocumentAction(CloseDocumentAction closeDocumentAction) {
+        this.closeDocumentAction = closeDocumentAction;
+    }
+
+    public DeleteNodeAction getDeleteNodeAction() {
+        return deleteNodeAction;
+    }
+
+    public void setDeleteNodeAction(DeleteNodeAction deleteNodeAction) {
+        this.deleteNodeAction = deleteNodeAction;
+    }
+
+    public NewDocumentAction getNewDocumentAction() {
+        return newDocumentAction;
+    }
+
+    public void setNewDocumentAction(NewDocumentAction newDocumentAction) {
+        this.newDocumentAction = newDocumentAction;
+    }
+
+    public NewNodeAction getNewNodeAction() {
+        return newNodeAction;
+    }
+
+    public void setNewNodeAction(NewNodeAction newNodeAction) {
+        this.newNodeAction = newNodeAction;
+    }
+
+    public NewPageAction getNewPageAction() {
+        return newPageAction;
+    }
+
+    public void setNewPageAction(NewPageAction newPageAction) {
+        this.newPageAction = newPageAction;
+    }
+
+    public NewProjectAction getNewProjectAction() {
+        return newProjectAction;
+    }
+
+    public void setNewProjectAction(NewProjectAction newProjectAction) {
+        this.newProjectAction = newProjectAction;
+    }
+
+    public OpenProjectAction getOpenProjectAction() {
+        return openProjectAction;
+    }
+
+    public void setOpenProjectAction(OpenProjectAction openProjectAction) {
+        this.openProjectAction = openProjectAction;
+    }
+
+    public OpenWorkSpaceAction getOpenWorkSpaceAction() {
+        return openWorkSpaceAction;
+    }
+
+    public void setOpenWorkSpaceAction(OpenWorkSpaceAction openWorkSpaceAction) {
+        this.openWorkSpaceAction = openWorkSpaceAction;
+    }
+
+    public RenameNodeAction getRenameNodeAction() {
+        return renameNodeAction;
+    }
+
+    public void setRenameNodeAction(RenameNodeAction renameNodeAction) {
+        this.renameNodeAction = renameNodeAction;
+    }
+
+    public SaveProjectAction getSaveProjectAction() {
+        return saveProjectAction;
+    }
+
+    public void setSaveProjectAction(SaveProjectAction saveProjectAction) {
+        this.saveProjectAction = saveProjectAction;
+    }
+
+}

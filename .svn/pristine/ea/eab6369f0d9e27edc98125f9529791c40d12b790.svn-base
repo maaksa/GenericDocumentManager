@@ -1,0 +1,46 @@
+package gerudok.state;
+
+import gerudok.model.Page;
+import gerudok.model.elements.CircleElement;
+import gerudok.model.elements.RectangleElement;
+import gerudok.model.elements.SlotDevice;
+
+import java.awt.*;
+import java.awt.event.MouseEvent;
+
+public class RectangleState extends State {
+
+    private Page mediator;// cuva se aktivno stanje
+    //upravlja aktivnostima izmedju razlicitih stanja u kojima se app moze naci
+
+    public RectangleState(Page page){
+        mediator = page;
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if(e.getButton() == MouseEvent.BUTTON1){
+            Point point = e.getPoint();
+            Paint paint = new Color(255,255,255);
+
+            RectangleElement rectangleElement = new RectangleElement(point, new Dimension(70,30), new BasicStroke(2f), paint, 0);
+            for(SlotDevice slotDevice : mediator.getSlotDevices()) {
+                if (slotDevice.getSlotPainter().isElementAt(e.getPoint())) {
+                    //exception
+                    return;
+                }
+            }
+            mediator.addSlotDevice(rectangleElement);
+        }
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+}

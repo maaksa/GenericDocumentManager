@@ -1,0 +1,11 @@
+package mymenubar.mymenuabout;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class MyMenuAboutController implements ActionListener {
+    @Override
+    public void actionPerformed(ActionEvent actionEvent) {
+        MyDialogAbout.getInstance().setVisible(true);
+    }
+}

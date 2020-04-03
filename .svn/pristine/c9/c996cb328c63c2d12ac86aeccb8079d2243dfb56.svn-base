@@ -1,0 +1,60 @@
+package gerudok.view;
+
+import gerudok.app.MyJFrame;
+import gerudok.model.Document;
+import gerudok.model.Page;
+import gerudok.model.Project;
+import gerudok.model.workspace.Workspace;
+
+import javax.swing.*;
+import javax.swing.tree.DefaultTreeCellEditor;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.EventObject;
+
+public class WorkspaceTreeEditor extends DefaultTreeCellEditor implements ActionListener {
+
+    private Object object = null;
+    private JTextField edit = null;
+
+    public WorkspaceTreeEditor(JTree tree, DefaultTreeCellRenderer renderer) {
+        super(tree, renderer);
+
+    }
+
+    public Component getTreeCellEditorComponent(JTree arg0, Object arg1, boolean arg2, boolean arg3, boolean arg4, int arg5) {
+
+        object = arg1;
+
+        edit = new JTextField(arg1.toString());
+        edit.addActionListener(this);
+        return edit;
+    }
+
+    @Override
+    public boolean isCellEditable(EventObject e) {
+        if (e instanceof MouseEvent) {
+            if (((MouseEvent) e).getClickCount() == 3) {
+                return true;
+            }
+            return false;
+        }
+        return true;
+    }
+
+   public void actionPerformed(ActionEvent e){
+       String NewName = e.getActionCommand();
+
+       if (object instanceof Project) {
+           ((Project) object).setName(NewName);
+       }
+       else if (object instanceof Document) {
+           ((Document) object).setName(NewName);
+       }
+       else if (object instanceof Page) {
+           ((Page) object).setName(NewName);
+       }
+    }
+
+}

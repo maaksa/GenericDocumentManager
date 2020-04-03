@@ -1,0 +1,7 @@
+package gerudok.eventobserver;
+
+public interface UpdateObservable {
+    public void fireUpdatePerformed(Object o);
+    public void addUpdateObserver(UpdateObserver updateObserver);
+    public void removeUpdateObserver(UpdateObserver updateObserver);
+}

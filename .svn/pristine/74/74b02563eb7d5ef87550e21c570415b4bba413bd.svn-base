@@ -1,0 +1,38 @@
+package gerudok.state;
+
+import gerudok.model.Page;
+
+//cuva reference za sva moguca stanja kao i trenutno aktivno stanje
+public class ManagerState {
+
+    private State currentState = null;//trenutno aktivno stanje
+    private CircleState circleState;
+    private RectangleState rectangleState;
+    private TriangleState triangleState;
+
+    public ManagerState(Page mediator){
+        circleState = new CircleState(mediator);
+        rectangleState = new RectangleState(mediator);
+        triangleState = new TriangleState(mediator);
+    }
+
+    //metode koje menjaju trenutno stanje currentState
+    //iz Page modela cemo pozivati start.......State i setovati ManagerStatu state
+    //koji je aktiviran putem akcije (circle,triangle,rectangle)Action
+    public void setCircleState() {
+        currentState = circleState;
+    }
+
+    public void setRectangleState() {
+        currentState = rectangleState;
+    }
+
+    public void setTriangleState() {
+        currentState = triangleState;
+    }
+
+    public State getCurrentState() {
+        return currentState;
+    }
+
+}

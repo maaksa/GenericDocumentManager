@@ -1,0 +1,27 @@
+package gerudok.gui;
+
+import gerudok.model.Project;
+import gerudok.model.workspace.Workspace;
+import gerudok.model.workspace.WorkspaceModel;
+import gerudok.view.WorkspaceTreeCellRenderer;
+
+import javax.swing.*;
+import javax.swing.tree.DefaultTreeCellRenderer;
+
+public class WorkspaceTree extends JTree {
+
+    public WorkspaceTree() {
+
+        //addTreeSelectionListener(new WorkspaceTreeController());
+        //setCellEditor(new WorkspaceTreeEditor(this,new DefaultTreeCellRenderer()));
+        setCellRenderer(new WorkspaceTreeCellRenderer());
+        setEditable(true);
+    }
+
+
+    public void addProject(Project project){
+        ((WorkspaceModel)getModel()).addProject(project);
+        SwingUtilities.updateComponentTreeUI(this);
+    }
+
+}

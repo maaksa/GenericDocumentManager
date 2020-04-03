@@ -1,0 +1,16 @@
+package gerudok.view.painters;
+
+import gerudok.model.elements.SlotElement;
+
+import java.awt.*;
+
+//deklarise metode za iscrtavanje
+public abstract class SlotElementPainter {
+
+    public SlotElementPainter(SlotElement slotElement){
+
+    }
+    public abstract void paint(Graphics2D g, SlotElement slotElement);
+    public abstract boolean isElementAt(Point point);
+
+}

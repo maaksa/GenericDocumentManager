@@ -1,0 +1,128 @@
+package gerudok.app;
+
+import gerudok.actions.ExitWindowAction;
+import gerudok.actions.manager.ActionManager;
+import gerudok.errorhandler.ErrorHandler;
+import gerudok.gui.MyMenuBar;
+import gerudok.gui.MyPopupMenu;
+import gerudok.gui.MyToolBar;
+import gerudok.gui.WorkspaceTree;
+import gerudok.model.workspace.Workspace;
+import gerudok.model.workspace.WorkspaceModel;
+import gerudok.view.WorkspaceView;
+
+import javax.swing.*;
+import java.awt.*;
+
+
+public class MyJFrame extends JFrame {
+
+    private static MyJFrame instance = null;
+    private ActionManager actionManager;
+    private ErrorHandler errorHandler;
+    private MyMenuBar myMenuBar;
+    private MyToolBar myToolBar;
+    private JPanel panelLeft;
+    private JPanel panelRight;
+    private JPanel panelCenter;
+    private MyPopupMenu myPopupMenu;
+
+    private WorkspaceView workspaceView;
+    private WorkspaceModel workspaceModel;
+    private WorkspaceTree workspaceTree;
+
+
+    private MyJFrame(){
+        Toolkit kit = Toolkit.getDefaultToolkit();
+        Dimension screenSize = kit.getScreenSize();
+        int screenHeight = screenSize.height;
+        int screenWidth = screenSize.width;
+        this.setSize(screenWidth / 2, screenHeight / 2);
+        this.setTitle("GeRuDok");
+        this.setDefaultCloseOperation(3);
+        this.addWindowListener(new ExitWindowAction());
+        this.setLocationRelativeTo((Component)null);
+    }
+
+    public ActionManager getActionManager(){
+        return actionManager;
+    }
+
+    public ErrorHandler getErrorHandler() {
+        return errorHandler;
+    }
+
+    public static MyJFrame getInstance(){
+        if(instance == null) {
+            instance = new MyJFrame();
+            instance.initialise();
+        }
+        return instance;
+    }
+
+    private void initialise(){
+        errorHandler = new ErrorHandler();
+        actionManager = new ActionManager();
+        initialiseWorkspaceTree();
+        initialiseGUI();
+    }
+
+    private void initialiseWorkspaceTree(){
+        workspaceTree=new WorkspaceTree();
+        workspaceModel = new WorkspaceModel();
+        workspaceTree.setModel(workspaceModel);
+
+    }
+
+    private void initialiseGUI(){
+
+        this.myMenuBar = new MyMenuBar();
+        this.myToolBar = new MyToolBar();
+        myPopupMenu = new MyPopupMenu();
+
+        this.setJMenuBar(myMenuBar);
+        this.getContentPane().add(myToolBar, BorderLayout.NORTH);
+
+
+        panelLeft = new JPanel(new BorderLayout());
+        panelLeft.setPreferredSize(new Dimension(120,120));
+        panelLeft.setBackground(Color.LIGHT_GRAY);
+
+        panelCenter = new JPanel(new BorderLayout());
+        panelCenter.setBackground(Color.WHITE);
+        setWorkspaceView();
+
+        this.add(panelLeft, BorderLayout.WEST);
+        this.add(panelCenter, BorderLayout.CENTER);
+
+        JScrollPane jScrollPane = new JScrollPane(panelLeft, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        jScrollPane.setMinimumSize(new Dimension(100,150));
+
+        JSplitPane jSplitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, jScrollPane, panelCenter);
+        panelLeft.setMinimumSize(new Dimension(100,100));
+
+        this.add(jSplitPane,BorderLayout.CENTER);
+        jSplitPane.setDividerLocation(200);
+
+        panelLeft.add(workspaceTree);
+
+    }
+
+    private void setWorkspaceView(){
+        workspaceView = new WorkspaceView((Workspace)workspaceModel.getRoot());
+        panelCenter.add(workspaceView);
+    }
+
+    public WorkspaceModel getWorkspaceModel() {
+        return workspaceModel;
+    }
+
+    public WorkspaceTree getWorkspaceTree() {
+        return workspaceTree;
+    }
+
+    public WorkspaceView getWorkspaceView() {
+        return workspaceView;
+    }
+}
+

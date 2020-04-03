@@ -1,0 +1,62 @@
+package gerudok.gui;
+
+import gerudok.app.MyJFrame;
+import gerudok.controller.WorkspaceTreeController;
+import gerudok.model.Document;
+import gerudok.model.Project;
+import gerudok.model.workspace.WorkspaceModel;
+import gerudok.view.WorkspaceTreeCellRenderer;
+import gerudok.view.WorkspaceTreeEditor;
+
+import javax.swing.*;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreePath;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+public class WorkspaceTree extends JTree {
+
+    public WorkspaceTree() {
+
+        addTreeSelectionListener(new WorkspaceTreeController());
+        setCellEditor(new WorkspaceTreeEditor(this,new DefaultTreeCellRenderer()));
+        setCellRenderer(new WorkspaceTreeCellRenderer());
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                if(e.getClickCount() == 2){
+                    doubleClickEvent();
+                }
+            }
+        });
+        setEditable(true);
+    }
+
+
+    public void addProject(Project project){
+        ((WorkspaceModel)getModel()).addProject(project);
+    }
+
+    public void removeProject(Project project) {
+        ((WorkspaceModel)getModel()).removeProject(project);
+    }
+
+
+    public void doubleClickEvent(){
+        TreePath path = getSelectionPath();
+
+        if(path.getLastPathComponent() instanceof Project){
+            MyJFrame.getInstance().getWorkspaceView().getCurrentProjectView().initialiseJTabbedPane();
+
+        }else if(path.getLastPathComponent() instanceof Document){
+            //menja trenutni projectview na onaj kojem pripada odgovarajuci dokumentview
+            MyJFrame.getInstance().getWorkspaceView().
+                    changeProjectView((Project)((Document)path.getLastPathComponent()).getParent());
+
+            //menja selektovani tab na trenutnom projectview
+            MyJFrame.getInstance().getWorkspaceView().getCurrentProjectView().
+                    setSelectedTab((Document)path.getLastPathComponent());
+        }
+    }
+}

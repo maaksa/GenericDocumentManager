@@ -1,0 +1,18 @@
+package gerudok.state;
+
+import gerudok.view.painters.handle.HandleEnum;
+
+import java.awt.event.MouseEvent;
+
+
+// opisuje ponašanje zajedničko za sva stanja
+// sadrži sve metode bez njihove implementacije
+public abstract class State {
+
+    protected HandleEnum handleEnum;
+
+    public abstract void mousePressed(MouseEvent e);
+    public abstract void mouseDragged(MouseEvent e);
+    public abstract void mouseReleased(MouseEvent e);
+
+}

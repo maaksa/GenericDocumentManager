@@ -1,0 +1,26 @@
+package gerudok.view.painters;
+
+import gerudok.model.elements.RectangleElement;
+import gerudok.model.elements.SlotElement;
+
+import java.awt.geom.GeneralPath;
+///RecatnglePainter zaduzen za definisanje Shape objekta koji predstavlja dati element
+public class RectanglePainter extends SlotDevicePainter {
+
+    public RectanglePainter(SlotElement slotElement) {
+        super(slotElement);
+        RectangleElement rectangleElement = (RectangleElement) slotElement;
+
+        shape = new GeneralPath();
+        ((GeneralPath) shape).moveTo(rectangleElement.getPosition().getX(), rectangleElement.getPosition().getY());
+
+        ((GeneralPath) shape).lineTo(rectangleElement.getPosition().getX() + rectangleElement.getSize().width, rectangleElement.getPosition().getY());
+
+        ((GeneralPath) shape).lineTo(rectangleElement.getPosition().getX() + rectangleElement.getSize().width, rectangleElement.getPosition().getY() + rectangleElement.getSize().height);
+
+        ((GeneralPath) shape).lineTo(rectangleElement.getPosition().getX(), rectangleElement.getPosition().getY() + rectangleElement.getSize().height);
+
+        ((GeneralPath) shape).closePath();
+    }
+
+}

@@ -1,0 +1,115 @@
+package gerudok.model;
+
+import gerudok.observer.MyObservable;
+import gerudok.observer.MyObserver;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+
+public class Document extends DefaultMutableTreeNode implements MyObservable {
+
+    private List<MyObserver> observers;
+    private List<Page> pages;
+    private String name;
+    private Project parent;
+
+    public Document(String name, Project parent){
+        super();
+        this.name = name;
+        this.parent = parent;
+        pages = new ArrayList<>();
+    }
+
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
+    public void addPage(Page page){
+        pages.add(page);
+        page.setName(this.name + " - Stranica - " + pages.size());
+    }
+
+    public void removePage(Page page){
+        pages.remove(page);
+    }
+
+    public void setName(String name){
+        this.name = name;
+        notifyObservers(name);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Page getPage(int arg0){
+        return pages.get(arg0);
+    }
+
+    public int getPagesCount(){
+        return pages.size();
+    }
+
+    public int getPageIndex(Page arg0){
+        return pages.indexOf(arg0);
+    }
+
+    public TreeNode getChildAt(int arg0) {
+        return getPage(arg0);
+    }
+
+    public int getChildCount() {
+        return getPagesCount();
+    }
+
+    public TreeNode getParent() {
+        return parent;
+    }
+
+    public int getIndex(TreeNode arg0) {
+        return getPageIndex((Page) arg0);
+    }
+
+    public boolean getAllowsChildren() {
+        return true;
+    }
+
+    public boolean isLeaf() {
+        return false;
+    }
+
+    public Enumeration<TreeNode> children() {
+        return (Enumeration<TreeNode>) pages;
+    }
+
+    @Override
+    public void addObserver(MyObserver var1) {
+        if(observers == null){
+            observers = new ArrayList<>();
+        }
+        if(var1 != null && !observers.contains(var1)){
+            observers.add(var1);
+        }
+    }
+
+    @Override
+    public void removeObserver(MyObserver var1) {
+        if(var1 != null && observers != null){
+            observers.remove(var1);
+        }
+    }
+
+    @Override
+    public void notifyObservers(Object var1) {
+        if(observers != null){
+            for (MyObserver observer : observers) {
+                observer.update(var1);
+            }
+        }
+    }
+}

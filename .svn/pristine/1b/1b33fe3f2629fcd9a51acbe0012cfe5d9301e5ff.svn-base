@@ -1,0 +1,29 @@
+package gerudok.actions;
+
+import javax.swing.*;
+import javax.swing.filechooser.FileSystemView;
+import java.awt.event.ActionEvent;
+
+public class OpenProjectAction extends MyAbstractAction {
+
+    public OpenProjectAction(){
+        putValue(NAME, "Open project");
+        putValue(SMALL_ICON, loadIcon("open-file-icon.png"));
+        putValue(SHORT_DESCRIPTION,"Open project");
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+
+        //JLabel label = new JLabel();
+        JFileChooser jFileChooser = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+
+        int r = jFileChooser.showOpenDialog(null);
+
+        // ako je user izabrao fajl
+        //if (r == JFileChooser.APPROVE_OPTION) {
+            //putanja izabranog fajla
+        //    label.setText(jFileChooser.getSelectedFile().getAbsolutePath());
+        //}
+    }
+}

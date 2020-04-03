@@ -1,0 +1,78 @@
+package gerudok.model.workspace;
+
+import gerudok.model.Project;
+import gerudok.observer.MyObservable;
+import gerudok.observer.MyObserver;
+import gerudok.observer.ObserverEnum;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
+import javax.swing.tree.TreeNode;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+
+public class Workspace extends DefaultMutableTreeNode implements MyObservable {
+
+    private List<Project> projects;
+    private List<MyObserver> observers;
+
+    public Workspace(){
+        super();
+        projects = new ArrayList<>();
+    }
+
+    @Override
+    public void add(MutableTreeNode newChild){
+        if(projects == null){
+            projects = new ArrayList<>();
+        }
+        if(newChild instanceof Project) {
+            Project project = (Project) newChild;
+            if (!projects.contains(project)) {
+                projects.add(project);
+                super.add(newChild);
+                project.setName("Projekat - " + projects.size());
+                notifyObservers(project, ObserverEnum.ADD);
+            }
+        }
+    }
+
+    public void removeProject(Project project){
+        if(project != null && projects != null && !projects.isEmpty()){
+            projects.remove(project);
+            super.remove(project);
+            notifyObservers(project, ObserverEnum.REMOVE);
+        }
+    }
+
+    public String toString(){
+        return "Workspace";
+    }
+
+    @Override
+    public void addObserver(MyObserver var1) {
+        if(observers == null){
+            observers = new ArrayList<>();
+        }
+        if(var1 != null && !observers.contains(var1)){
+            observers.add(var1);
+        }
+    }
+
+    @Override
+    public void removeObserver(MyObserver var1) {
+        if(observers != null && !observers.isEmpty() && var1 != null){
+            observers.remove(var1);
+        }
+    }
+
+    @Override
+    public void notifyObservers(Object var1, ObserverEnum changeType) {
+        if(observers != null && !observers.isEmpty()){
+            for (MyObserver observer : observers) {
+                observer.update(var1, changeType);
+            }
+        }
+    }
+}

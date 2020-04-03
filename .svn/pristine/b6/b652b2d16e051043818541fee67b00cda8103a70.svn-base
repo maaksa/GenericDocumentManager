@@ -1,0 +1,78 @@
+package gerudok.model;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeNode;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+
+public class Project extends DefaultMutableTreeNode {
+
+    private String name;
+    private List<Document> documents;
+
+    public Project(String name){
+        super();
+        this.name = name;
+        documents = new ArrayList<>();
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
+    public void addDocument(Document document){
+        documents.add(document);
+        document.setName( this.name + " - Dokument - " + documents.size());
+    }
+
+    public void removeDocument(Document document){
+        documents.remove(document);
+    }
+
+    public void setName(String name){
+        this.name = name;
+    }
+
+    public Document getDocument(int arg0){
+        return documents.get(arg0);
+    }
+
+    public int getDocumentsCount(){
+        return documents.size();
+    }
+
+    public int getDocumentIndex(Document arg0){
+        return documents.indexOf(arg0);
+    }
+
+    public TreeNode getChildAt(int arg0) {
+        return getDocument(arg0);
+    }
+
+    public int getChildCount() {
+        return getDocumentsCount();
+    }
+
+    public TreeNode getParent() {
+        return null;
+    }
+
+    public int getIndex(TreeNode arg0) {
+        return getDocumentIndex((Document) arg0);
+    }
+
+    public boolean getAllowsChildren() {
+        return true;
+    }
+
+    public boolean isLeaf() {
+        return false;
+    }
+
+    public Enumeration<TreeNode> children() {
+        return (Enumeration<TreeNode>) documents;
+    }
+
+}

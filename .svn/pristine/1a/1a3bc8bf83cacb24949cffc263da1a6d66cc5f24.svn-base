@@ -1,0 +1,128 @@
+package gerudok.model;
+
+import gerudok.app.MyJFrame;
+import gerudok.errorhandler.ExceptionEnum;
+import gerudok.observer.MyObservable;
+import gerudok.observer.MyObserver;
+import gerudok.observer.ObserverEnum;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Document extends DefaultMutableTreeNode implements MyObservable {
+
+    private int pageCounter = 0;
+    private List<MyObserver> observers;
+    private List<Page> pages;
+    private String name;
+
+    public Document(String name){
+        super();
+        this.name = name;
+        pages = new ArrayList<>();
+    }
+
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
+    @Override
+    public void add(MutableTreeNode newChild){
+        if(pages == null){
+            pages = new ArrayList<>();
+        }
+        if(newChild != null && newChild instanceof Page && !pages.contains((Page)newChild)){
+            Page page = (Page)newChild;
+            pages.add(page);
+            super.add(newChild);
+            page.setName(page.toString() + " - " + ++pageCounter);
+            notifyObservers(page, ObserverEnum.ADD);
+        }
+    }
+
+    public void removePage(Page page){
+        if(page != null && pages != null && !pages.isEmpty()) {
+            pages.remove(page);
+            super.remove(page);
+            notifyObservers(page, ObserverEnum.REMOVE);
+        }
+    }
+
+    public void setName(String name){
+        //provera da li je ime prazan string
+        if(name == null || name.isEmpty()){
+            MyJFrame.getInstance().getErrorHandler().generateError(ExceptionEnum.NODE_RENAME_EMPTY);
+            return;
+        }
+
+        if(checkIfNameExists(name) == false) {
+            this.name = name;
+            notifyObservers(name, ObserverEnum.NAME_CHANGE);
+        }
+    }
+
+    private boolean checkIfNameExists(String name) {
+
+        Project project = (Project) this.getParent();
+        List<Document> documents = project.getDocuments();
+
+        for (Document d : documents) {
+            if (d.toString().equals(name) && !d.equals(this)) {
+                MyJFrame.getInstance().getErrorHandler().generateError(ExceptionEnum.NODE_SAME_NAME);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<Page> getPages() {
+        return pages;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Page getPage(int arg0){
+        return pages.get(arg0);
+    }
+
+    public int getPagesCount(){
+        return pages.size();
+    }
+
+    public int getPageIndex(Page arg0){
+        return pages.indexOf(arg0);
+    }
+
+
+    @Override
+    public void addObserver(MyObserver var1) {
+        if(observers == null){
+            observers = new ArrayList<>();
+        }
+        if(var1 != null && !observers.contains(var1)){
+            observers.add(var1);
+        }
+    }
+
+    @Override
+    public void removeObserver(MyObserver var1) {
+        if(var1 != null && observers != null){
+            observers.remove(var1);
+        }
+    }
+
+    @Override
+    public void notifyObservers(Object var1, ObserverEnum changeType) {
+        if(observers != null){
+            for (MyObserver observer : observers) {
+                observer.update(var1, changeType);
+            }
+        }
+    }
+}

@@ -1,0 +1,28 @@
+package gerudok.state;
+
+import gerudok.model.Page;
+import gerudok.model.elements.CircleElement;
+
+import java.awt.*;
+import java.awt.event.MouseEvent;
+
+//ponasanje aplikacije u datomo stanju
+public class CircleState extends State {
+
+    private Page mediator;
+
+    public CircleState(Page page){
+        mediator = page;
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        if(e.getButton() == MouseEvent.BUTTON1){
+            Point point = e.getPoint();
+            Paint paint = new Color(255,255,255);//boja unutar shapa
+
+            CircleElement circleElement = new CircleElement(point, new Dimension(70,70), new BasicStroke(2f), paint);
+            mediator.addSlotDevice(circleElement);
+        }
+    }
+}

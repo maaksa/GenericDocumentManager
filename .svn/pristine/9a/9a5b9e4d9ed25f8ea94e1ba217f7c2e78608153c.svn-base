@@ -1,0 +1,70 @@
+package gerudok.errorhandler;
+
+import gerudok.observer.MyErrorObservable;
+import gerudok.observer.MyErrorObserver;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class ErrorHandler implements MyErrorObservable {
+
+    private List<MyErrorObserver> observers;
+
+    public ErrorHandler(){
+    }
+
+    public void generateError(ExceptionEnum exceptionEnum){
+        String message = "";
+
+        switch (exceptionEnum){
+            case NODE_RENAME_EMPTY:
+                message = "Name can't be empty";
+                break;
+            case NODE_SAME_NAME:
+                message = "This name already exists";
+                break;
+            case NO_SELECTED_DELETE:
+                message = "You haven't selected a node";
+                break;
+            case NO_SELECTED_TAB:
+                message = "You haven't selected a tab";
+                break;
+            case WORKSPACE_RENAME:
+                message = "You can't rename the workspace";
+                break;
+            case WORKSPACE_DELETE:
+                message = "You can't delete the workspace";
+                break;
+        }
+        notifyObservers(message, exceptionEnum);
+    }
+
+    @Override
+    public void addObserver(MyErrorObserver var1) {
+
+        if(observers == null){
+            observers = new ArrayList<>();
+        }
+        if(var1 != null && !observers.contains(var1)){
+            observers.add(var1);
+        }
+    }
+
+    @Override
+    public void removeObserver(MyErrorObserver var1) {
+
+        if(var1 != null && observers != null){
+            observers.remove(var1);
+        }
+    }
+
+    @Override
+    public void notifyObservers(Object var1, ExceptionEnum changeType) {
+        if(observers != null){
+            for (MyErrorObserver observer : observers) {
+                observer.update(var1, changeType);
+            }
+        }
+    }
+
+}
